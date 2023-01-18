@@ -1,0 +1,133 @@
+.sidebar-default{
+    &.left-bordered {
+        &.sidebar-mini {
+            .sidebar-body {
+                padding-right: $spacer;
+                padding-left: $spacer;
+            }
+            @include sidebar-nav-item-varients(false, .625rem .75rem);
+            .navbar-nav{
+                &:not(.sub-nav) {
+                    >.nav-item {
+                        &.active, &:not(.static-item) {
+                            &::before {
+                                left: -35%;
+                            }
+                        }
+                    }
+                }
+            }
+            &.sidebar-hover{
+                &:hover{
+                    .navbar-nav{
+                        &:not(.sub-nav) {
+                            >.nav-item {
+                                &.active, &:not(.static-item) {
+                                    &::before {
+                                        left: -7%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .navbar-nav{
+            &:not(.sub-nav) {
+                >.nav-item {
+                    //hover border
+                    &:not(.static-item){
+                        position: relative;
+                        &::before {
+                            position: absolute;
+                            content: '';
+                            width: 4px;
+                            height: 0%;
+                            background-color: var(--#{$variable-prefix}primary);
+                            top: 0;
+                            left: 0;
+                            border-top-right-radius: $border-radius;
+                            border-bottom-right-radius: $border-radius;
+                            z-index: 1;
+                            transition: all .4s ease-in-out;
+                        }
+                        &:hover{
+                            &::before {
+                                height: 100%;
+                                transition: all .4s ease-in-out;
+                                z-index: 1;
+                            }
+                        }
+                    }
+                    &.active {
+                        position: relative;
+                        &::before {
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+            .nav-item {
+                .nav-link{
+                    &:not(.disabled) {
+                        &.active, &[aria-expanded=true] {
+                            background: unset;
+                            box-shadow: none;
+                            color: var(--#{$variable-prefix}primary);
+                        }
+                        &:hover {
+                            background: unset !important;
+                            box-shadow: none;
+                            color: var(--#{$variable-prefix}primary);
+                        }
+                    }
+                }
+            }
+        }
+        &.sidebar-color{
+            .navbar-nav{
+                &:not(.sub-nav) {
+                    >.nav-item {
+                        &.active, &:not(.static-item) {
+                            &::before {
+                                background-color: var(--#{$variable-prefix}white);
+                            }
+                        }
+                    }
+                }
+                .nav-item {
+                    .nav-link{
+                        &:not(.disabled) {
+                            color: #ededed;
+                            &.active, &[aria-expanded=true] {
+                                color: var(--#{$variable-prefix}white);
+                            }
+                            &:hover {
+                                color: var(--#{$variable-prefix}white);
+                            }
+                        }
+                        &.disabled{
+                            .default-icon{
+                                color: $white;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &:not(.sidebar-mini){
+        .navbar-nav{
+            .nav-item{
+                .nav-link{
+                    &:not(.disabled){
+                        .icon{
+                            display: inline-flex;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

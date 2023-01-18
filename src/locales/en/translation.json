@@ -1,0 +1,45 @@
+{
+    "dbtitle":"Quick Insights",
+    "dbsubtitle":"Financial Dashboard",
+    "dbclckinbtn":"Clock In",
+    "dbgraphtitle":"Net Volumes From Sales",
+    "dbc1title":"Gross Volume",
+    "dbc1subtitle":"Last updated 1 hour ago",
+    "dbc1label":"View",
+    "dbc2title":"USD Balance",
+    "dbc2subtitle":"Available to pay out",
+    "dbc2label":"Request Payout",
+    "dbc3title":"No Of Payments",
+    "dbc3subtitle":"Transactions this month",
+    "dbc3label":"View",
+    "dbc4title":"Last Transaction",
+    "dbc4subtitle":"This Month",
+    "dbc4label":"View Report",
+    "dbc4item1title":"Received",
+    "dbc4item2title":"Transferred",
+    "dbc5title":"Send Money To",
+    "dbc5label":"All Contacts",
+    "dbc5btn":"Send Money",
+    "dbc5ph1":"Select Your Account",
+    "dbc5ph2":"Enter Amount in USD",
+    "dbtabitem1title":"Payments",
+    "dbtabitem2title":"Settlements",
+    "dbtabitem3title":"Refunds",
+    
+    "sidebar":{
+        "title":"Home",
+        "item1":"Dashboard",
+        "item2":"Properties",
+        "item3":"HR",
+        "item4":"Legal Cases",
+        "item5":"Assets",
+        "item6":"LogBook",
+        "item7":"Parking",
+        "item8":"CRM",
+        "item9":"Ad Management",
+        "item10":"Task",
+        "item11":"Maintenance"
+    }
+
+
+}
