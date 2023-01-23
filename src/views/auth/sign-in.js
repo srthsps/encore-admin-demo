@@ -28,6 +28,8 @@ const SignIn = memo(() => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
+
+
   const { loginSuccess, loginError, loginErrorMessage } = useSelector(
     (state) => state.userSlice
   );
@@ -38,13 +40,31 @@ const SignIn = memo(() => {
 
   const login = (e) => {
     e.preventDefault();
-    // dispatch(loginUser({ username, password }));
+    let error = undefined;
+
+    if (username === "") {
+      error = "Please enter username";
+    } else if (password === "") {
+      error = "Please enter password";
+    }
+
+    if (error) {
+      toast.error(error);
+    } else {
+      dispatch(loginUser({ username, password }));
+    };
+  }
+  
+  if (loginSuccess) {
+    toast.success("login success");
     history.push("/dashboard");
-  };
+
+  }
+
+
 
   useEffect(() => {
     if (loginError) {
-      // alert(loginErrorMessage);
       toast.error(loginErrorMessage, {
         position: "top-center",
         autoClose: 5000,
@@ -59,7 +79,7 @@ const SignIn = memo(() => {
 
     if (loginSuccess) {
       dispatch(clearLoginState());
-      
+
     }
   }, [loginError, loginSuccess]);
 
@@ -78,7 +98,7 @@ const SignIn = memo(() => {
                     >
                       <div className="mb-4">
                         <div className="logo-normal">
-                         <h1>MI STAFF</h1>
+                          <h1>Encore Powers</h1>
                         </div>
                       </div>
                     </Link>
@@ -192,7 +212,7 @@ const SignIn = memo(() => {
                   />
                 </g>
               </svg>
-              
+
             </div>
           </Col>
           <Col

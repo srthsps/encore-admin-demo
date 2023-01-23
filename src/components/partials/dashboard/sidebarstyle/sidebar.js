@@ -104,7 +104,7 @@ const Sidebar = memo((props) => {
         data-sidebar="responsive"
       >
         <div className="sidebar-header ps-0">
-          <Link to="/dashboard" className="navbar-brand">
+          <Link to="/staff" className="navbar-brand">
             <Logo />
           </Link>
 

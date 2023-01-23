@@ -71,7 +71,7 @@ const VerticalNav = memo(() => {
             <span className="mini-icon">-</span>
           </Link> */}
         </li>
-        <li
+        {/* <li
           style={
             location.pathname === "/dashboard"
               ? { background: "#eff8fb", borderRadius: "6px" }
@@ -121,7 +121,7 @@ const VerticalNav = memo(() => {
               Dashboard
             </span>
           </Link>
-        </li>
+        </li> */}
         <li
           style={
             location.pathname === `/staff`

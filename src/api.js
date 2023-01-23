@@ -12,7 +12,7 @@ const actionHandler = (payload) => {
 
   return new Promise((resolve, reject) => {
     //Development
-    payload.baseURL = "";
+    payload.baseURL = "https://dev.enfono.com/api_encore_backend/api";
 
     axios(payload)
       .then((response) => {
@@ -59,13 +59,13 @@ axios.interceptors.response.use(undefined, function (err) {
       localStorage.removeItem("admin-token");
       window.location.pathname = "/auth/sign-in";
     }
-    throw err;
+    throw err;  
   });
 });
 
 export default {
   /* auth URLs */
-  loginURL: "auth/login/", // [POST]
+  loginURL: "/auth/login/", // [POST]
   logoutURL: "auth/logout/", // [POST]
   profileURL: "auth/profile/", // [GET, PUT]
 

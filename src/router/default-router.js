@@ -24,9 +24,9 @@ const DefaultRouter = memo(() => {
       <CSSTransition classNames="fadein" timeout={200}>
         <Suspense fallback={<Loading1 />}>
           <Switch>
-            <Route path="/dashboard" exact component={Index} />
+            {/* <Route path="/dashboard" exact component={Index} /> */}
      
-            <Route exact path="/staff" component={Staffs} />
+            <Route exact path="/product " component={Staffs} />
 
             <Route exact path="/barcode/:active_tab?" component={BarcodeDashboard} />
 
