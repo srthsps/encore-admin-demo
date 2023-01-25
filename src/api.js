@@ -67,7 +67,23 @@ export default {
   /* auth URLs */
   loginURL: "/auth/login/", // [POST]
   logoutURL: "auth/logout/", // [POST]
-  profileURL: "auth/profile/", // [GET, PUT]
+  
+  // product urls
+
+  productListURL:"/web_admin/products/list?limit={limit}&offset={offset}",
+  brandListURL:"/web_admin/brands/?limit={limit}&offset={offset}",
+  productAddURL:"/web_admin/products/",
+  brandAddURL:"/web_admin/brands/",
+  categoriesListURL:"/web_admin/categories/?limit={limit}&offset={offset}",
+  categoriesAddURL:"/web_admin/categories/",
+
+  // orders url
+
+  orderList:"/web_admin/orders/",
+  orderDetails:"/web_admin/orders/{id}",
+  orderProcessing:"/web_admin/order/processing/{id}",
+  orderShipped:"/web_admin/order/shipped/{id}",
+
 
   actionHandler,
 };

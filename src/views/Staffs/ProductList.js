@@ -13,7 +13,7 @@ import NodataAnimation from "../../components/custom/NodataAnimation";
 import AddUser from "./AddUser";
 import EditUser from "./EditUser";
 
-const UserList = memo(() => {
+const ProductList = memo(() => {
   const [filter, setFilter] = useState("staff");
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
@@ -213,4 +213,4 @@ const UserList = memo(() => {
   );
 });
 
-export default UserList;
+export default ProductList;

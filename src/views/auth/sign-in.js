@@ -39,6 +39,7 @@ const SignIn = memo(() => {
   }, []);
 
   const login = (e) => {
+    
     e.preventDefault();
     let error = undefined;
 
@@ -56,8 +57,8 @@ const SignIn = memo(() => {
   }
   
   if (loginSuccess) {
+    history.push("/product/Product-list");
     toast.success("login success");
-    history.push("/dashboard");
 
   }
 
@@ -104,7 +105,7 @@ const SignIn = memo(() => {
                     </Link>
                     <h2 className="mb-2 text-center">Sign In</h2>
                     <p className="text-center">Login to stay connected.</p>
-                    <Form onSubmit={(e) => login(e)}>
+                    <Form   >
                       <Row>
                         <Col lg="12">
                           <Form.Group className="form-group">

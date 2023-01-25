@@ -21,6 +21,14 @@ import staffListSlice from "./usermanagement/staff/staffListSlice";
 import staffDetailsSlice from "./usermanagement/staff/staffDetailsSlice";
 import staffEditSlice from "./usermanagement/staff/staffEditSlice";
 import staffAddSlice from "./usermanagement/staff/staffAddSlice";
+import orderListSlice from "./order/OrderListSlice";
+import orderDetailsSlice from "./order/OrderDetailsSlice";
+import ProductListSlice from "./Product/ProductListSlice";
+import productAddSlice from "./Product/ProductAddSlice";
+import BrandListSlice from "./Product/Brand/BrandListSlice";
+import brandAddSlice from "./Product/Brand/AddBrandSlice";
+import CategoryListSlice from "./Product/Categories/CategoriesListSlice";
+import CategoryAddSlice from "./Product/Categories/AddCategorySlice";
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -30,6 +38,25 @@ export const store = configureStore({
   reducer: {
     setting: settingReducer,
     userSlice,
+
+    // Products
+
+    ProductListSlice,
+    productAddSlice,
+
+    // order
+    orderListSlice,
+    orderDetailsSlice,
+
+    //Category
+
+    CategoryListSlice,
+    CategoryAddSlice,
+
+    // Brand
+    BrandListSlice,
+    brandAddSlice,
+
     //Staff
     staffListSlice,
     staffAddSlice,

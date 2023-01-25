@@ -12,10 +12,10 @@ import Authmiddleware from "../router/Authmiddleware";
 import ScrollTop from "../components/ScrollTop";
 
 const userRoutes = [
-  { path: "/dashboard", component: Default },
-  { path: "/", component: () => <Redirect to="/dashboard" /> },
-  { path: "/staff", component: Default },
-  { path: "/barcode/:active_tab?", component: Default },
+  { path: "/product/:active_tab?", component: Default },
+  { path: "/", component: () => <Redirect to="/product/:active_tab?" /> },
+  // { path: "/staff", component: Default },
+  { path: "/order/:active_tab?", component: Default },
 
   {
     path: "/errors/error404",

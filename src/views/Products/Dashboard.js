@@ -1,30 +1,42 @@
 import React, { useState, useEffect, memo } from "react";
 //react-bootstrap
-import { Nav, Tab ,Card } from "react-bootstrap";
+import { Nav, Tab, Card } from "react-bootstrap";
 
 import { useHistory, useParams } from "react-router-dom";
+import BrandList from "./Brand/BrandList";
+import Category from "./Category/Category";
+import ProductList from "./Index";
+
 
 //components
-import Barcode from "./Index";
-import LatestBarcode from "./LatestBarcode";
+// import BusinessDetails from "./BusinessDetails";
+// import ImageList from "./imagesList/ImagesList";
+// import WorkingDays from "./working/WorkingDaysList";
 
-const BarcodeDashboard = memo(() => {
+const ProductDashboard = memo(() => {
   const history = useHistory();
   let { active_tab } = useParams();
   const tabs = [
     {
-      title: "Latest QR Code",
-      route: "latest-barcode",
+      title: "Product List",
+      route: "Product-list",
       eventKey: "first",
-      content: <LatestBarcode />,
+      content: <ProductList />,
     },
     {
-      title: "QR Code",
-      route: "barcode-list",
+      title: "Brand List",
+      route: "Brand-list",
       eventKey: "second",
-      content: <Barcode />,
+      content: <BrandList/>,
     },
-   
+    {
+      title: "Categories List",
+      route: "Categories-list",
+      eventKey: "third",
+      content: <Category/>,
+    },
+
+
   ];
   useEffect(() => {
     const defaultTab = tabs[0].route;
@@ -41,7 +53,7 @@ const BarcodeDashboard = memo(() => {
   return (
     <React.Fragment>
       <div className="">
-        <h5 className="mb-4">QR Codes</h5>
+        <h5 className="mb-4">Products List</h5>
         <Tab.Container defaultActiveKey="first">
           <Card>
             <Card.Body>
@@ -59,7 +71,7 @@ const BarcodeDashboard = memo(() => {
                         style={{
                           borderBottom:
                             selected === item.eventKey
-                              ? "3px solid #018EC5"
+                              ? "3px solid #284D77"
                               : "",
                           color: selected === item.eventKey ? "" : "black",
                         }}
@@ -96,4 +108,4 @@ const BarcodeDashboard = memo(() => {
   );
 });
 
-export default BarcodeDashboard;
+export default ProductDashboard;

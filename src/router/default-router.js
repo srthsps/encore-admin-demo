@@ -5,15 +5,16 @@ import { Switch, Route } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import Loading1 from "../components/custom/loading1";
+// import ProductList from "../views/Products/Index";
 
 //Dashboard
-const Index = lazy(() => import("../views/dashboard/index"));
+// const Index = lazy(() => import("../views/dashboard/index"));
 
-//Staffs
-const Staffs = lazy(() => import("../views/Staffs/UserList"));
+//Product
+const ProductDashboard = lazy(() => import("../views/Products/Dashboard"));
 
 //Barcode
-const BarcodeDashboard = lazy(() => import("../views/Barcode/Dashboard"));
+const OrderDashboard = lazy(() => import("../views/Order/Dashboard"));
 
 //Profile
 const UserProfile = lazy(() => import("../views/Profile/ProfileDashboard"));
@@ -26,9 +27,9 @@ const DefaultRouter = memo(() => {
           <Switch>
             {/* <Route path="/dashboard" exact component={Index} /> */}
      
-            <Route exact path="/product " component={Staffs} />
+            <Route  path="/product:active_tab?"  component={ProductDashboard  } />
 
-            <Route exact path="/barcode/:active_tab?" component={BarcodeDashboard} />
+            <Route exact path="/order/:active_tab?" component={OrderDashboard} />
 
             <Route path="/staff-profile" component={UserProfile} />
           </Switch>
