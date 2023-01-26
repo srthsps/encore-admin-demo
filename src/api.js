@@ -78,6 +78,7 @@ export default {
   categoriesListURL: "/web_admin/categories/?limit={limit}&offset={offset}",
   categoriesAddURL: "/web_admin/categories/",
   categoriesDeleteURL: "/web_admin/category/{id}",
+  categoriesEditURL: "/web_admin/category/{id}",
 
   // product urls
 

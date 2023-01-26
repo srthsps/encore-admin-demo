@@ -37,6 +37,7 @@ import brandAddSlice from "./Product/Brand/AddBrandSlice";
 import CategoryListSlice from "./Product/Categories/CategoriesListSlice";
 import CategoryAddSlice from "./Product/Categories/AddCategorySlice";
 import categoryDeleteSlice from "./Product/Categories/CategoryDeleteSlice";
+import CategoryEditSlice from "./Product/Categories/EditCategorySlice";
 
 
 export const store = configureStore({
@@ -68,6 +69,7 @@ export const store = configureStore({
     CategoryListSlice,
     CategoryAddSlice,
     categoryDeleteSlice,
+    CategoryEditSlice,
 
     // Brand
     BrandListSlice,

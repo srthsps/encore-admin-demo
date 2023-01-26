@@ -62,7 +62,7 @@ const OrderList = () => {
           {orderList?.map((item, idx) => (
             <Col key={idx} md={3} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Card
-                
+
                 style={{ width: '18rem' }}
                 className="shadow-sm text-center"
               >
@@ -89,37 +89,28 @@ const OrderList = () => {
                   </Card.Title>
                 </Card.Body>
                 <Col className='pb-5' >
-                    {item.status === 0 ? (
-                      <Badge bg="warning">Pending</Badge>
-                    ) : item.status === 1 ? (
-                      <Badge bg="primary">Processing</Badge>
-                    ) : item.status === 2 ? (
-                      <Badge bg="dark">Shipped</Badge>
-                    ) : item.status === 3 ? (
-                      <Badge bg="success">Delivered</Badge>
-                    ) : item.status === 4 ? (
-                      <Badge bg="danger"> Cancelled </Badge>
-                    ) : null
-                    }
+                  {item.status === 0 ? (
+                    <Badge bg="warning">Pending</Badge>
+                  ) : item.status === 1 ? (
+                    <Badge bg="primary">Processing</Badge>
+                  ) : item.status === 2 ? (
+                    <Badge bg="dark">Shipped</Badge>
+                  ) : item.status === 3 ? (
+                    <Badge bg="success">Delivered</Badge>
+                  ) : item.status === 4 ? (
+                    <Badge bg="danger"> Cancelled </Badge>
+                  ) : null
+                  }
 
-                    <svg
-                      onClick={() => handleDelete(item.id)}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      className="bi bi-trash ms-5"
-                      style={{ cursor: 'pointer' }}
-                      viewBox="0 0 16 16"
-                    >
+                  <button onClick={() => handleDelete(item.id)} className="btn btn-danger ms-3" style={{paddingLeft:"8px", paddingRight:"8px", paddingTop:"2px", paddingBottom:"2px"}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" style={{ cursor: "pointer" }} viewBox="0 0 16 16">
                       <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                      <path
-                        fill-rule="evenodd"
-                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                      />
+                      <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                     </svg>
 
-                  </Col>
+                  </button>
+
+                </Col>
               </Card>
             </Col>
           ))}

@@ -29,6 +29,7 @@
     "react-aws-s3": "^1.5.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-bootstrap": "^2.1.2",
+    "react-bootstrap-icons": "^1.10.2",
     "react-circular-progressbar": "^2.0.4",
     "react-dom": "^17.0.2",
     "react-flatpickr": "^3.10.11",
