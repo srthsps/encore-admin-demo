@@ -22,13 +22,20 @@ import staffDetailsSlice from "./usermanagement/staff/staffDetailsSlice";
 import staffEditSlice from "./usermanagement/staff/staffEditSlice";
 import staffAddSlice from "./usermanagement/staff/staffAddSlice";
 import orderListSlice from "./order/OrderListSlice";
+import orderShippedSlice from "./order/OrderShippedSlice";
+import orderProcessSlice from "./order/OrderProcessSlice";
+import orderCancelledSlice from "./order/OrderCancelledSlice";
 import orderDetailsSlice from "./order/OrderDetailsSlice";
+import orderDeliveredSlice from "./order/OrderDeliveredSlice";
 import ProductListSlice from "./Product/ProductListSlice";
 import productAddSlice from "./Product/ProductAddSlice";
+import productDeleteSlice from "./Product/ProductDeleteSlice";
 import BrandListSlice from "./Product/Brand/BrandListSlice";
+import BrandDeleteSlice from "./Product/Brand/BrandDeleteSlice";
 import brandAddSlice from "./Product/Brand/AddBrandSlice";
 import CategoryListSlice from "./Product/Categories/CategoriesListSlice";
 import CategoryAddSlice from "./Product/Categories/AddCategorySlice";
+
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -43,10 +50,15 @@ export const store = configureStore({
 
     ProductListSlice,
     productAddSlice,
+    productDeleteSlice,
 
     // order
     orderListSlice,
     orderDetailsSlice,
+    orderShippedSlice,
+    orderProcessSlice,
+    orderDeliveredSlice,
+    orderCancelledSlice,
 
     //Category
 
@@ -56,6 +68,7 @@ export const store = configureStore({
     // Brand
     BrandListSlice,
     brandAddSlice,
+    BrandDeleteSlice,
 
     //Staff
     staffListSlice,

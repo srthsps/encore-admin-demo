@@ -68,12 +68,17 @@ export default {
   loginURL: "/auth/login/", // [POST]
   logoutURL: "auth/logout/", // [POST]
   
+  // brand urls
+  brandListURL:"/web_admin/brands/?limit={limit}&offset={offset}",
+  brandAddURL:"/web_admin/brands/",
+  brandDelteURL:"/web_admin/brand/{id}",
+
+
   // product urls
 
   productListURL:"/web_admin/products/list?limit={limit}&offset={offset}",
-  brandListURL:"/web_admin/brands/?limit={limit}&offset={offset}",
+  productDeleteURL:"/web_admin/product/{id}",
   productAddURL:"/web_admin/products/",
-  brandAddURL:"/web_admin/brands/",
   categoriesListURL:"/web_admin/categories/?limit={limit}&offset={offset}",
   categoriesAddURL:"/web_admin/categories/",
 
@@ -83,6 +88,9 @@ export default {
   orderDetails:"/web_admin/orders/{id}",
   orderProcessing:"/web_admin/order/processing/{id}",
   orderShipped:"/web_admin/order/shipped/{id}",
+  orderDelivered:"/web_admin/order/delivered/{id}",
+  orderCancelled:"/web_admin/order/cancelled/{id}",
+  
 
 
   actionHandler,

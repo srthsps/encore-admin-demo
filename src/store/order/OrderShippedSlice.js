@@ -32,8 +32,6 @@ const orderShippedSlice = createSlice({
     name: "order-Shipped",
     initialState: {
         orderShipped: {},
-        orderShippedStatus: {},
-        orderShippedpro: [],
         orderShippedFetching: false,
         orderShippedSuccess: false,
         orderShippedError: false,
@@ -51,8 +49,6 @@ const orderShippedSlice = createSlice({
     extraReducers: {
         [fetchorderShipped.fulfilled]: (state, { payload }) => {
             state.orderShipped = payload.data;
-            state.orderShippedpro = payload.data.products;
-            state.orderShippedStatus = payload.data.products.status;
             // payload.data.products.forEach(data => state.orderShippedpro.push(data))
             state.orderShippedFetching = false;
             state.orderShippedSuccess = true;

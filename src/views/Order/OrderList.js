@@ -19,11 +19,19 @@ const OrderList = () => {
     setOrderDetailsToggle(true)
     setOrderID(id)
   }
-  useEffect(() => {
-    dispatch(fetchOrderList())
-  }, [])
+
 
   const { orderList } = useSelector((state) => state.orderListSlice)
+  const { orderShippedSuccess, orderShippedFetching, orderShippedErrorMessage, orderShippedError } = useSelector((state) => state.orderShippedSlice)
+  const { orderCancelledSuccess, orderCancelledError, orderCancelledFetching, orderCancelledErrorMessage } = useSelector((state) => state.orderCancelledSlice)
+  const { orderDeliveredSuccess, orderDeliveredErrorMessage, orderDeliveredError, orderDeliveredFetching } = useSelector((state) => state.orderDeliveredSlice)
+  const { orderProcessSuccess, orderProcessFetching, orderProcessErrorMessage, orderProcessError } = useSelector((state) => state.orderProcessSlice)
+
+
+  useEffect(() => {
+    dispatch(fetchOrderList())
+  }, [orderShippedSuccess, orderShippedFetching, orderCancelledSuccess, orderCancelledFetching, orderDeliveredSuccess, orderDeliveredFetching, orderProcessSuccess, orderProcessFetching])
+
 
 
   // const setAddToggle = useCallback(() => {
@@ -45,7 +53,7 @@ const OrderList = () => {
       <div>
         <Row className="mt-5" >
           {orderList?.map((item, idx) => (
-            <Col key={idx} md={3} style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <Col key={idx} md={3} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Card
                 onClick={() => handleView(item.id)}
                 style={{ width: '18rem' }}

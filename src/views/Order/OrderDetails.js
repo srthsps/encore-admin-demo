@@ -8,11 +8,19 @@ import { toast } from 'react-toastify'
 // } from "../../store/barcode/barcodeAddSlice";
 import Select from 'react-select'
 import { fetchorderDetails } from '../../store/order/OrderDetailsSlice'
-import { fetchorderProcess } from '../../store/order/OrderProcessSlice'
+import { clearorderProcessState, fetchorderProcess } from '../../store/order/OrderProcessSlice'
 import { fetchorderShipped } from '../../store/order/OrderShippedSlice'
+import { fetchorderDelivered } from '../../store/order/OrderDeliveredSlice'
+import { fetchorderCancelled } from '../../store/order/OrderCancelledSlice'
 
 const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
+  const { orderProcessSuccess, orderProcessErrorMessage, orderProcessError } = useSelector((state) => state.orderProcessSlice)
+  const { orderShippedSuccess, orderShippedFetching, orderShippedErrorMessage, orderShippedError } = useSelector((state) => state.orderShippedSlice)
+  const { orderCancelledSuccess, orderCancelledError, orderCancelledFetching, orderCancelledErrorMessage } = useSelector((state) => state.orderCancelledSlice)
+  const { orderDeliveredSuccess, orderDeliveredErrorMessage, orderDeliveredError, orderDeliveredFetching } = useSelector((state) => state.orderDeliveredSlice)
   const dispatch = useDispatch()
+  console.log(orderProcessErrorMessage);
+
 
   useEffect(() => {
     dispatch(fetchorderDetails({ orderID }))
@@ -22,17 +30,46 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
     (state) => state.orderDetailsSlice,
   )
 
-  const handleProcess = (id) =>{
-    dispatch(fetchorderProcess({orderID : id}))
+  const handleProcess = (id) => {
+    dispatch(fetchorderProcess({ orderID: id }))
+    if (orderProcessSuccess) {
+      toast.success("Status Changed to processing")
+    }
+    else if (orderProcessError) {
+      toast.error(orderProcessErrorMessage)
+
+    }
+    dispatch(clearorderProcessState())
   }
-  const handleShipped = (id) =>{
-    dispatch(fetchorderShipped({orderID : id}))
+  const handleShipped = (id) => {
+    dispatch(fetchorderShipped({ orderID: id }))
+    if (orderShippedSuccess) {
+      toast.success("Status Changed to Shipped")
+    }
+    else if (orderShippedError) {
+      toast.error(orderShippedErrorMessage)
+
+    }
   }
-  const handleDelivered = (id) =>{
-    dispatch(fetchorderProcess({orderID : id}))
+  const handleDelivered = (id) => {
+    dispatch(fetchorderDelivered({ orderID: id }))
+    if (orderDeliveredSuccess) {
+      toast.success("Status Changed to Delivered")
+    }
+    else if (orderDeliveredError) {
+      toast.error(orderDeliveredErrorMessage)
+
+    }
   }
-  const handleCancelled = (id) =>{
-    dispatch(fetchorderProcess({orderID : id}))
+  const handleCancelled = (id) => {
+    dispatch(fetchorderCancelled({ orderID: id }))
+    if (orderCancelledSuccess) {
+      toast.success("Status Changed to Cancelled")
+    }
+    else if (orderCancelledError) {
+      toast.error(orderCancelledErrorMessage)
+
+    }
   }
 
   console.log('feca', orderDetailspro)
@@ -47,10 +84,10 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
           <Row>
             <Col>
               Change Order Status
-              <Badge style={{cursor:"pointer"}} onClick={()=>handleProcess(orderDetails.id)} className=' pt-2 pb-2 ps-2 pe-2' bg="primary ms-3 ">Processing</Badge>
-              <Badge style={{cursor:"pointer"}} onClick={()=>handleShipped(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="warning ms-3">Shipped</Badge>
-              <Badge style={{cursor:"pointer"}} onClick={()=>handleDelivered(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="success ms-3 ">Delivered</Badge>
-              <Badge style={{cursor:"pointer"}} onClick={()=>handleCancelled(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="danger ms-3 ">Cancelled</Badge>
+              <Badge style={{ cursor: "pointer" }} onClick={() => handleProcess(orderDetails.id)} className=' pt-2 pb-2 ps-2 pe-2' bg="primary ms-3 ">Processing</Badge>
+              <Badge style={{ cursor: "pointer" }} onClick={() => handleShipped(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="warning ms-3">Shipped</Badge>
+              <Badge style={{ cursor: "pointer" }} onClick={() => handleDelivered(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="success ms-3 ">Delivered</Badge>
+              <Badge style={{ cursor: "pointer" }} onClick={() => handleCancelled(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="danger ms-3 ">Cancelled</Badge>
             </Col>
           </Row>
           <hr />
@@ -143,7 +180,7 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
             </Button>
             <Button
               variant="primary"
-              // onClick={saveChanges}
+            // onClick={saveChanges}
             >
               Save
             </Button>

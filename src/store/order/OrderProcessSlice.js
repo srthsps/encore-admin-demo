@@ -32,8 +32,6 @@ const orderProcessSlice = createSlice({
     name: "order-Process",
     initialState: {
         orderProcess: {},
-        orderProcessStatus: {},
-        orderProcesspro: [],
         orderProcessFetching: false,
         orderProcessSuccess: false,
         orderProcessError: false,
@@ -44,6 +42,7 @@ const orderProcessSlice = createSlice({
             state.orderProcessError = false;
             state.orderProcessSuccess = false;
             state.orderProcessFetching = false;
+            state.orderProcessErrorMessage= ""
 
             return state;
         },
@@ -51,8 +50,6 @@ const orderProcessSlice = createSlice({
     extraReducers: {
         [fetchorderProcess.fulfilled]: (state, { payload }) => {
             state.orderProcess = payload.data;
-            state.orderProcesspro = payload.data.products;
-            state.orderProcessStatus = payload.data.products.status;
             // payload.data.products.forEach(data => state.orderProcesspro.push(data))
             state.orderProcessFetching = false;
             state.orderProcessSuccess = true;
