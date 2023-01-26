@@ -25,6 +25,7 @@ import orderListSlice from "./order/OrderListSlice";
 import orderShippedSlice from "./order/OrderShippedSlice";
 import orderProcessSlice from "./order/OrderProcessSlice";
 import orderCancelledSlice from "./order/OrderCancelledSlice";
+import orderDeleteSlice from "./order/OrderDeleteSlice";
 import orderDetailsSlice from "./order/OrderDetailsSlice";
 import orderDeliveredSlice from "./order/OrderDeliveredSlice";
 import ProductListSlice from "./Product/ProductListSlice";
@@ -35,6 +36,7 @@ import BrandDeleteSlice from "./Product/Brand/BrandDeleteSlice";
 import brandAddSlice from "./Product/Brand/AddBrandSlice";
 import CategoryListSlice from "./Product/Categories/CategoriesListSlice";
 import CategoryAddSlice from "./Product/Categories/AddCategorySlice";
+import categoryDeleteSlice from "./Product/Categories/CategoryDeleteSlice";
 
 
 export const store = configureStore({
@@ -59,11 +61,13 @@ export const store = configureStore({
     orderProcessSlice,
     orderDeliveredSlice,
     orderCancelledSlice,
+    orderDeleteSlice,
 
     //Category
 
     CategoryListSlice,
     CategoryAddSlice,
+    categoryDeleteSlice,
 
     // Brand
     BrandListSlice,

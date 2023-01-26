@@ -59,7 +59,7 @@ axios.interceptors.response.use(undefined, function (err) {
       localStorage.removeItem("admin-token");
       window.location.pathname = "/auth/sign-in";
     }
-    throw err;  
+    throw err;
   });
 });
 
@@ -67,30 +67,34 @@ export default {
   /* auth URLs */
   loginURL: "/auth/login/", // [POST]
   logoutURL: "auth/logout/", // [POST]
-  
-  // brand urls
-  brandListURL:"/web_admin/brands/?limit={limit}&offset={offset}",
-  brandAddURL:"/web_admin/brands/",
-  brandDelteURL:"/web_admin/brand/{id}",
 
+  // brand urls
+  brandListURL: "/web_admin/brands/?limit={limit}&offset={offset}",
+  brandAddURL: "/web_admin/brands/",
+  brandDelteURL: "/web_admin/brand/{id}",
+
+
+  // category urls
+  categoriesListURL: "/web_admin/categories/?limit={limit}&offset={offset}",
+  categoriesAddURL: "/web_admin/categories/",
+  categoriesDeleteURL: "/web_admin/category/{id}",
 
   // product urls
 
-  productListURL:"/web_admin/products/list?limit={limit}&offset={offset}",
-  productDeleteURL:"/web_admin/product/{id}",
-  productAddURL:"/web_admin/products/",
-  categoriesListURL:"/web_admin/categories/?limit={limit}&offset={offset}",
-  categoriesAddURL:"/web_admin/categories/",
+  productListURL: "/web_admin/products/list?limit={limit}&offset={offset}",
+  productDeleteURL: "/web_admin/product/{id}",
+  productAddURL: "/web_admin/products/",
 
   // orders url
 
-  orderList:"/web_admin/orders/",
-  orderDetails:"/web_admin/orders/{id}",
-  orderProcessing:"/web_admin/order/processing/{id}",
-  orderShipped:"/web_admin/order/shipped/{id}",
-  orderDelivered:"/web_admin/order/delivered/{id}",
-  orderCancelled:"/web_admin/order/cancelled/{id}",
-  
+  orderList: "/web_admin/orders/",
+  orderDeleteURL: "/web_admin/orders/{id}",
+  orderDetails: "/web_admin/orders/{id}",
+  orderProcessing: "/web_admin/order/processing/{id}",
+  orderShipped: "/web_admin/order/shipped/{id}",
+  orderDelivered: "/web_admin/order/delivered/{id}",
+  orderCancelled: "/web_admin/order/cancelled/{id}",
+
 
 
   actionHandler,

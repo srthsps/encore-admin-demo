@@ -37,7 +37,6 @@ const CategoryListSlice = createSlice({
         categorySuccess: false,
         categoryError: false,
         categoryErrorMessage: "",
-        CategoryCount: null,
     },
     reducers: {
         categoryClearState: (state) => {
@@ -52,7 +51,6 @@ const CategoryListSlice = createSlice({
         [fetchCategoryList.fulfilled]: (state, { payload }) => {
             state.CategoryList = [];
             payload.data.results.forEach((item) => state.CategoryList.push(item));
-            state.CategoryCount = payload.data.count;
             state.categoryFetching = false;
             state.categorySuccess = true;
             return state;
