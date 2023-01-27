@@ -1,101 +1,101 @@
-import { useEffect, memo, Fragment, useState } from "react";
+import { useEffect, memo, Fragment, useState } from 'react'
 
 //router
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 //components
-import VerticalNav from "./vertical-nav";
-import Logo from "../../components/logo";
+import VerticalNav from './vertical-nav'
+import Logo from '../../components/logo'
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux'
 
 //scrollbar
-import Scrollbar from "smooth-scrollbar";
+import Scrollbar from 'smooth-scrollbar'
 
 // Import selectors & action from setting store
-import * as SettingSelector from "../../../../store/setting/selectors";
+import * as SettingSelector from '../../../../store/setting/selectors'
 
-import { sidebar_type } from "../../../../store/setting/reducers";
+import { sidebar_type } from '../../../../store/setting/reducers'
 
 // Redux Selector / Action
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux'
 
 const Sidebar = memo((props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const sidebarColor = useSelector(SettingSelector.sidebar_color);
-  const sidebarType = useSelector(SettingSelector.sidebar_type); // array
-  const sidebarMenuStyle = useSelector(SettingSelector.sidebar_menu_style);
+  const sidebarColor = useSelector(SettingSelector.sidebar_color)
+  const sidebarType = useSelector(SettingSelector.sidebar_type) // array
+  const sidebarMenuStyle = useSelector(SettingSelector.sidebar_menu_style)
 
   useEffect(() => {
     if (window.innerWidth < 1025) {
       document
-        .getElementsByTagName("ASIDE")[0]
-        ?.classList.toggle("sidebar-mini");
+        .getElementsByTagName('ASIDE')[0]
+        ?.classList.toggle('sidebar-mini')
     }
-  }, [window?.innerWidth]);
+  }, [window?.innerWidth])
 
   const minisidebar = () => {
-    document.getElementsByTagName("ASIDE")[0].classList.toggle("sidebar-mini");
+    document.getElementsByTagName('ASIDE')[0].classList.toggle('sidebar-mini')
     const side = document
-      .getElementsByTagName("ASIDE")[0]
-      .classList.contains("sidebar-mini");
+      .getElementsByTagName('ASIDE')[0]
+      .classList.contains('sidebar-mini')
     if (side) {
-      dispatch(sidebar_type("sidebar-mini"));
+      dispatch(sidebar_type('sidebar-mini'))
     } else {
-      dispatch(sidebar_type(""));
+      dispatch(sidebar_type(''))
     }
-  };
+  }
 
   // const resizePlugins = () => {
   //     // For sidebar-mini & responsive
 
   //   }
 
-  const [sideType, setSideType] = useState(false);
+  const [sideType, setSideType] = useState(false)
 
   useEffect(() => {
-    Scrollbar.init(document.querySelector("#my-scrollbar"));
+    Scrollbar.init(document.querySelector('#my-scrollbar'))
 
-    window.addEventListener("resize", () => {
-      const tabs = document.querySelectorAll(".nav");
+    window.addEventListener('resize', () => {
+      const tabs = document.querySelectorAll('.nav')
       const sidebarResponsive = document.querySelector(
-        '[data-sidebar="responsive"]'
-      );
+        '[data-sidebar="responsive"]',
+      )
       if (window.innerWidth < 1025) {
         Array.from(tabs, (elem) => {
           if (
-            !elem.classList.contains("flex-column") &&
-            elem.classList.contains("nav-tabs") &&
-            elem.classList.contains("nav-pills")
+            !elem.classList.contains('flex-column') &&
+            elem.classList.contains('nav-tabs') &&
+            elem.classList.contains('nav-pills')
           ) {
-            elem.classList.add("flex-column", "on-resize");
+            elem.classList.add('flex-column', 'on-resize')
           }
-          return elem.classList.add("flex-column", "on-resize");
-        });
+          return elem.classList.add('flex-column', 'on-resize')
+        })
         if (sidebarResponsive !== null) {
-          if (!sidebarResponsive.classList.contains("sidebar-mini")) {
-            sidebarResponsive.classList.add("sidebar-mini", "on-resize");
+          if (!sidebarResponsive.classList.contains('sidebar-mini')) {
+            sidebarResponsive.classList.add('sidebar-mini', 'on-resize')
           }
         }
       } else {
         Array.from(tabs, (elem) => {
-          if (elem.classList.contains("on-resize")) {
-            elem.classList.remove("flex-column", "on-resize");
+          if (elem.classList.contains('on-resize')) {
+            elem.classList.remove('flex-column', 'on-resize')
           }
-          return elem.classList.remove("flex-column", "on-resize");
-        });
+          return elem.classList.remove('flex-column', 'on-resize')
+        })
         if (sidebarResponsive !== null) {
           if (
-            sidebarResponsive.classList.contains("sidebar-mini") &&
-            sidebarResponsive.classList.contains("on-resize")
+            sidebarResponsive.classList.contains('sidebar-mini') &&
+            sidebarResponsive.classList.contains('on-resize')
           ) {
-            sidebarResponsive.classList.remove("sidebar-mini", "on-resize");
+            sidebarResponsive.classList.remove('sidebar-mini', 'on-resize')
           }
         }
       }
-    });
-  });
+    })
+  })
 
   return (
     <Fragment>
@@ -153,8 +153,8 @@ const Sidebar = memo((props) => {
         </div>
       </aside>
     </Fragment>
-  );
-});
+  )
+})
 
-Sidebar.displayName = "Sidebar";
-export default Sidebar;
+Sidebar.displayName = 'Sidebar'
+export default Sidebar

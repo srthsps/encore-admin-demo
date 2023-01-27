@@ -1,6 +1,6 @@
-import { useState, useContext, memo, Fragment, useEffect } from "react";
+import { useState, useContext, memo, Fragment, useEffect } from 'react'
 //Router
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from 'react-router-dom'
 
 //React-bootstrap
 import {
@@ -10,57 +10,57 @@ import {
   Nav,
   Tooltip,
   OverlayTrigger,
-} from "react-bootstrap";
+} from 'react-bootstrap'
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux'
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 function CustomToggle({ children, eventKey, onClick }) {
-  const { activeEventKey } = useContext(AccordionContext);
+  const { activeEventKey } = useContext(AccordionContext)
 
   const decoratedOnClick = useAccordionButton(eventKey, (active) =>
-    onClick({ state: !active, eventKey: eventKey })
-  );
+    onClick({ state: !active, eventKey: eventKey }),
+  )
 
-  const isCurrentEventKey = activeEventKey === eventKey;
+  const isCurrentEventKey = activeEventKey === eventKey
 
   return (
     <Link
       to="#"
-      aria-expanded={isCurrentEventKey ? "true" : "false"}
+      aria-expanded={isCurrentEventKey ? 'true' : 'false'}
       className="nav-link"
       role="button"
       onClick={(e) => {
-        decoratedOnClick(isCurrentEventKey);
+        decoratedOnClick(isCurrentEventKey)
       }}
     >
       {children}
     </Link>
-  );
+  )
 }
 
 const VerticalNav = memo(() => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [userID, setUserID] = useState(localStorage.getItem("userID"));
+  const [userID, setUserID] = useState(localStorage.getItem('userID'))
 
-  const { t } = useTranslation();
-  const { active_tab, propertyID } = useParams();
-  const [activeMenu, setActiveMenu] = useState(false);
-  const [show, setShow] = useState(false);
+  const { t } = useTranslation()
+  const { active_tab, propertyID } = useParams()
+  const [activeMenu, setActiveMenu] = useState(false)
+  const [show, setShow] = useState(false)
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
-  const [show1, setShow1] = useState(false);
+  const [show1, setShow1] = useState(false)
 
-  const handleClose1 = () => setShow1(false);
-  const handleShow1 = () => setShow1(true);
-  const [active, setActive] = useState("");
+  const handleClose1 = () => setShow1(false)
+  const handleShow1 = () => setShow1(true)
+  const [active, setActive] = useState('')
 
   //location
-  let location = useLocation();
+  let location = useLocation()
 
   return (
     <Fragment className="">
@@ -125,15 +125,17 @@ const VerticalNav = memo(() => {
         <li
           style={
             location.pathname === `/product/${active_tab}`
-              ? { background: "#eff8fb", borderRadius: "6px" }
+              ? { background: '#eff8fb', borderRadius: '6px' }
               : {}
           }
-          className={`${location.pathname === `/product/${active_tab}` ? "active" : ""
-            } nav-item `}
+          className={`${
+            location.pathname === `/product/${active_tab}` ? 'active' : ''
+          } nav-item `}
         >
           <Link
-            className={`${location.pathname === `/product/${active_tab}` ? "active" : ""
-              } nav-link `}
+            className={`${
+              location.pathname === `/product/${active_tab}` ? 'active' : ''
+            } nav-link `}
             aria-current="page"
             to="/product/Product-list"
           >
@@ -142,14 +144,21 @@ const VerticalNav = memo(() => {
               overlay={<Tooltip>Product</Tooltip>}
             >
               <i className="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shop-window" viewBox="0 0 16 16">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-shop-window"
+                  viewBox="0 0 16 16"
+                >
                   <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h12V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zm2 .5a.5.5 0 0 1 .5.5V13h8V9.5a.5.5 0 0 1 1 0V13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a.5.5 0 0 1 .5-.5z" />
                 </svg>
               </i>
             </OverlayTrigger>
             <span
               className="item-name text-black"
-              style={{ fontWeight: "600" }}
+              style={{ fontWeight: '600' }}
             >
               Product
             </span>
@@ -158,15 +167,17 @@ const VerticalNav = memo(() => {
         <li
           style={
             location.pathname === `/order/${active_tab}`
-              ? { background: "#eff8fb", borderRadius: "6px" }
+              ? { background: '#eff8fb', borderRadius: '6px' }
               : {}
           }
-          className={`${location.pathname === `/order/${active_tab}` ? "active" : ""
-            } nav-item `}
+          className={`${
+            location.pathname === `/order/${active_tab}` ? 'active' : ''
+          } nav-item `}
         >
           <Link
-            className={`${location.pathname === `/order/${active_tab}` ? "active" : ""
-              } nav-link `}
+            className={`${
+              location.pathname === `/order/${active_tab}` ? 'active' : ''
+            } nav-link `}
             aria-current="page"
             to="/order/order-list"
           >
@@ -175,14 +186,24 @@ const VerticalNav = memo(() => {
               overlay={<Tooltip>Order</Tooltip>}
             >
               <i className="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-list-ul"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                  />
                 </svg>
               </i>
             </OverlayTrigger>
             <span
               className="item-name text-black"
-              style={{ fontWeight: "600" }}
+              style={{ fontWeight: '600' }}
             >
               Order
             </span>
@@ -190,8 +211,8 @@ const VerticalNav = memo(() => {
         </li>
       </Accordion>
     </Fragment>
-  );
-});
+  )
+})
 
-VerticalNav.displayName = "VerticalNav";
-export default VerticalNav;
+VerticalNav.displayName = 'VerticalNav'
+export default VerticalNav

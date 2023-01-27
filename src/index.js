@@ -1,21 +1,21 @@
-import { StrictMode } from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
+import { StrictMode } from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
 // import reportWebVitals from './reportWebVitals';
 
 //router
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom'
 //store
 
-import { Provider } from "react-redux";
+import { Provider } from 'react-redux'
 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 //reducer
-import { store } from "./store";
+import { store } from './store'
 
-import "./i18n";
+import './i18n'
 
 ReactDOM.render(
   <StrictMode>
@@ -36,6 +36,5 @@ ReactDOM.render(
       </Provider>
     </BrowserRouter>
   </StrictMode>,
-  document.getElementById("root")
-);
-
+  document.getElementById('root'),
+)
