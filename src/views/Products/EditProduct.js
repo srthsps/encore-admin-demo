@@ -2,17 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 
-import {
-    addStaff,
-    clearAsaState,
-} from "../../store/usermanagement/staff/staffAddSlice";
+
 
 import { toast } from "react-toastify";
 import { fetchBrandList } from "../../store/Product/Brand/BrandListSlice";
 import { fetchCategoryList } from "../../store/Product/Categories/CategoriesListSlice";
-import { addProduct } from "../../store/Product/ProductAddSlice";
 import { fetchproductDetails } from "../../store/Product/ProductDetailsSlice";
-import { editProduct } from "../../store/Product/EditProductSlice";
+import { cleareditProductState, editProduct } from "../../store/Product/EditProductSlice";
 
 const EditProduct = (props) => {
     const dispatch = useDispatch();
@@ -33,8 +29,8 @@ const EditProduct = (props) => {
     const { CategoryList } = useSelector((state) => state.CategoryListSlice)
     const { ProductsDetails } = useSelector((state) => state.productDetailsSlice)
 
-    const { addProductFetching, EditProductuccess, addProductError } = useSelector(
-        (state) => state.productAddSlice
+    const { addProductFetching, editProductSuccess, editProductError } = useSelector(
+        (state) => state.EditProductSlice
     );
 
     const [product_code, setProductCode] = useState("");
@@ -76,7 +72,7 @@ console.log(ProductsDetails);
 
         let error = undefined;
 
-        if (data.brand.trim() === "") {
+        if (data.brand === "") {
             error = "Please select brand";
         } else if (data.category === "") {
             error = "Please select category";
@@ -106,11 +102,11 @@ console.log(ProductsDetails);
         } else {
             let payload = data;
 
-            dispatch(editProduct({ payload, productID }));
+            dispatch(editProduct({ payload, productID:props.productId }));
         }
     };
     useEffect(() => {
-        if (EditProductuccess) {
+        if (editProductSuccess) {
             toast.success("Updated successfully", {
                 toastId: "addUser",
                 position: "top-center",
@@ -123,11 +119,11 @@ console.log(ProductsDetails);
                 draggable: true,
                 progress: undefined,
             });
-            dispatch(clearAsaState());
+            dispatch(cleareditProductState());
             props?.setToggle(false);
-        } else if (addProductError) {
-            if (addProductError.includes("Email already exists")) {
-                toast.error("Email already exists", {
+        } else if (editProductError) {
+            if (editProductError) {
+                toast.error(editProductError, {
                     toastId: "addLawyer",
                     position: "top-right",
                     autoClose: 5000,
@@ -140,7 +136,7 @@ console.log(ProductsDetails);
                     progress: undefined,
                 });
             } else {
-                toast.error(addProductError, {
+                toast.error(editProductError, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -152,9 +148,9 @@ console.log(ProductsDetails);
                     progress: undefined,
                 });
             }
-            dispatch(clearAsaState());
+            dispatch(cleareditProductState());
         }
-    }, [EditProductuccess, addProductError]);
+    }, [editProductSuccess, editProductError]);
 
     const handleCancel =()=>{
         props.setToggle(false)
@@ -178,7 +174,7 @@ console.log(ProductsDetails);
                     >
                         <Col xl={12}>
                             <h5 className="ms-2 text-black">
-                                <strong>Add Products</strong>
+                                <strong>Edit Products</strong>
                             </h5>
                         </Col>
                     </Row>
