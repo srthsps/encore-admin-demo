@@ -72,6 +72,9 @@ export default {
   brandListURL: "/web_admin/brands/?limit={limit}&offset={offset}",
   brandAddURL: "/web_admin/brands/",
   brandDelteURL: "/web_admin/brand/{id}",
+  BrandDetailsURL: "/web_admin/brand/{id}",
+  brandEditURL: "/web_admin/brand/{id}",
+
 
 
   // category urls
@@ -79,16 +82,20 @@ export default {
   categoriesAddURL: "/web_admin/categories/",
   categoriesDeleteURL: "/web_admin/category/{id}",
   categoriesEditURL: "/web_admin/category/{id}",
+  categoriesDetailsURL: "/web_admin/category/{id}",
 
   // product urls
 
   productListURL: "/web_admin/products/list?limit={limit}&offset={offset}",
   productDeleteURL: "/web_admin/product/{id}",
   productAddURL: "/web_admin/products/",
+  productEditURL:"/web_admin/product/{id}",
+  productDetailsURL:"/web_admin/product/{id}",
 
   // orders url
 
-  orderList: "/web_admin/orders/",
+  orderList: "/web_admin/orders/?limit={limit}&offset={offset}",
+  // orderList: "/orders/?limit={limit}&offset={offset}",
   orderDeleteURL: "/web_admin/orders/{id}",
   orderDetails: "/web_admin/orders/{id}",
   orderProcessing: "/web_admin/order/processing/{id}",

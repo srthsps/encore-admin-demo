@@ -22,7 +22,7 @@ const OrderList = () => {
   }
 
 
-  const { orderList } = useSelector((state) => state.orderListSlice)
+  const { orderList, orderCount } = useSelector((state) => state.orderListSlice)
   const { orderShippedSuccess, orderShippedFetching, orderShippedErrorMessage, orderShippedError } = useSelector((state) => state.orderShippedSlice)
   const { orderCancelledSuccess, orderCancelledError, orderCancelledFetching, orderCancelledErrorMessage } = useSelector((state) => state.orderCancelledSlice)
   const { orderDeliveredSuccess, orderDeliveredErrorMessage, orderDeliveredError, orderDeliveredFetching } = useSelector((state) => state.orderDeliveredSlice)
@@ -31,7 +31,7 @@ const OrderList = () => {
 
 
   useEffect(() => {
-    dispatch(fetchOrderList())
+    dispatch(fetchOrderList({ limit, offset: currentPage }))
   }, [orderShippedSuccess, orderDeleteSuccess, orderShippedFetching, orderCancelledSuccess, orderCancelledFetching, orderDeliveredSuccess, orderDeliveredFetching, orderProcessSuccess, orderProcessFetching])
 
 
@@ -102,7 +102,7 @@ const OrderList = () => {
                   ) : null
                   }
 
-                  <button onClick={() => handleDelete(item.id)} className="btn btn-danger ms-3" style={{paddingLeft:"8px", paddingRight:"8px", paddingTop:"2px", paddingBottom:"2px"}}>
+                  <button onClick={() => handleDelete(item.id)} className="btn btn-danger ms-3" style={{ paddingLeft: "8px", paddingRight: "8px", paddingTop: "2px", paddingBottom: "2px" }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" style={{ cursor: "pointer" }} viewBox="0 0 16 16">
                       <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                       <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
@@ -124,11 +124,11 @@ const OrderList = () => {
       <Row className="ms-5">
         <Col>
           <div className="mt-5 me-5 d-flex justify-content-end">
-            {/* <PaginationComponent
-            itemsCount={barcodeCount}
-            itemsPerPage={limit}
-            setCurrentPage={setCurrentPage}
-            /> */}
+            <PaginationComponent
+              itemsCount={orderCount}
+              itemsPerPage={limit}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         </Col>
       </Row>

@@ -5,18 +5,33 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { clearCategoryAddState, fetchCategoryAdd } from '../../../store/Product/Categories/AddCategorySlice';
 import { fetchCategoryList } from '../../../store/Product/Categories/CategoriesListSlice';
+import { fetchcategoryDetailsList } from '../../../store/Product/Categories/CategoryDetailsSlice';
 import { clearCategoryState, editCategory } from '../../../store/Product/Categories/EditCategorySlice';
 
 const EditCategory = (props) => {
 
+    const { categoryDetailsList, categoryDetailsSuccess, categoryDetailsError, categoryDetailsFetching, categoryDetailsErrorMessage } = useSelector((state) => state.categoryDetailsListSlice)
     const dispatch = useDispatch()
+    // const [catData, setCatData] = useState(categoryDetailsList.category_name)
+
+    const [category_name, setCategoryName] = useState("")
+
+    useEffect(() => {
+
+        dispatch(fetchcategoryDetailsList({ DetailsID: props.id }))
+        setCategoryName(categoryDetailsList?.category_name)
 
 
-    const [category_name, setCategoryName] = useState(props.catData.category_name)
-    console.log("asx", category_name);
+
+    }, [props.id])
+
+
+    console.log(categoryDetailsList);
     const handleEdit = () => {
-        dispatch(editCategory({ payload: category_name, categoryID: props.id }))
+
         dispatch(clearCategoryState())
+        setCatData("")
+
     }
 
     const { CategoryAddSuccess, CategoryAddFetching, CategoryAddError, CategoryAddErrorMessage, } = useSelector((state) => state.CategoryAddSlice)
@@ -30,7 +45,7 @@ const EditCategory = (props) => {
 
     useEffect(() => {
         dispatch(fetchCategoryList())
-    }, [CategoryAddSuccess, CategoryAddFetching])
+    }, [categoryDetailsSuccess, categoryDetailsFetching])
 
 
     const handleSave = () => {
@@ -56,13 +71,13 @@ const EditCategory = (props) => {
                 progress: undefined,
             });
         } else {
-            let payload = data;
 
-            dispatch(fetchCategoryAdd({ payload }));
+
+            dispatch(editCategory({ payload: category_name, categoryID: props.id }))
         }
     };
     useEffect(() => {
-        if (CategoryAddSuccess) {
+        if (categoryDetailsSuccess) {
             toast.success("Updated successfully", {
                 toastId: "EditCategory",
                 position: "top-right",
@@ -77,8 +92,8 @@ const EditCategory = (props) => {
             });
             dispatch(clearCategoryAddState());
             props?.setToggle(false);
-        } else if (CategoryAddError) {
-            if (CategoryAddErrorMessage.includes("Email already exists")) {
+        } else if (categoryDetailsError) {
+            if (categoryDetailsErrorMessage.includes("Email already exists")) {
                 toast.error("Email already exists", {
                     toastId: "EditCategory",
                     position: "top-right",
@@ -104,9 +119,9 @@ const EditCategory = (props) => {
                     progress: undefined,
                 });
             }
-            dispatch(clearCategoryAddState());
+            dispatch(clearCategoryState());
         }
-    }, [CategoryAddSuccess, CategoryAddError]);
+    }, [categoryDetailsSuccess, categoryDetailsError]);
 
     return (
         <div className="modal" id="modal">
@@ -141,7 +156,7 @@ const EditCategory = (props) => {
                             Cancel
                         </Button>
                         <Button variant="primary"
-                            onClick={handleEdit}
+                            onClick={handleSave}
                         >
                             Save
                         </Button>

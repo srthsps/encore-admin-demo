@@ -30,14 +30,19 @@ import orderDetailsSlice from "./order/OrderDetailsSlice";
 import orderDeliveredSlice from "./order/OrderDeliveredSlice";
 import ProductListSlice from "./Product/ProductListSlice";
 import productAddSlice from "./Product/ProductAddSlice";
+import EditProductSlice from "./Product/EditProductSlice";
 import productDeleteSlice from "./Product/ProductDeleteSlice";
+import productDetailsSlice from "./Product/ProductDetailsSlice";
 import BrandListSlice from "./Product/Brand/BrandListSlice";
+import BrandDetailsSlice from "./Product/Brand/BrandDetails";
 import BrandDeleteSlice from "./Product/Brand/BrandDeleteSlice";
+import brandEditSlice from "./Product/Brand/EditBrandSlice";
 import brandAddSlice from "./Product/Brand/AddBrandSlice";
 import CategoryListSlice from "./Product/Categories/CategoriesListSlice";
 import CategoryAddSlice from "./Product/Categories/AddCategorySlice";
 import categoryDeleteSlice from "./Product/Categories/CategoryDeleteSlice";
 import CategoryEditSlice from "./Product/Categories/EditCategorySlice";
+import categoryDetailsListSlice from "./Product/Categories/CategoryDetailsSlice";
 
 
 export const store = configureStore({
@@ -54,6 +59,8 @@ export const store = configureStore({
     ProductListSlice,
     productAddSlice,
     productDeleteSlice,
+    EditProductSlice,
+    productDetailsSlice,
 
     // order
     orderListSlice,
@@ -70,11 +77,14 @@ export const store = configureStore({
     CategoryAddSlice,
     categoryDeleteSlice,
     CategoryEditSlice,
+    categoryDetailsListSlice,
 
     // Brand
     BrandListSlice,
     brandAddSlice,
     BrandDeleteSlice,
+    BrandDetailsSlice,
+    brandEditSlice,
 
     //Staff
     staffListSlice,

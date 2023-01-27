@@ -169,22 +169,6 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
               })}
             </Col>
           </Row>
-
-          <div className="d-flex justify-content-end">
-            <Button
-              onClick={() => setToggle(false)}
-              className="btn btn-md me-3"
-              style={{ backgroundColor: 'white', color: 'black' }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-            // onClick={saveChanges}
-            >
-              Save
-            </Button>
-          </div>
         </Modal.Body>
       </Modal>
     </div>
