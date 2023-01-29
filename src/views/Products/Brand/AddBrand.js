@@ -1,124 +1,157 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Form, Button, Modal } from 'react-bootstrap'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 
-import { toast } from 'react-toastify'
-import { fetchBrandList } from '../../../store/Product/Brand/BrandListSlice'
-import { fetchCategoryList } from '../../../store/Product/Categories/CategoriesListSlice'
+import { toast } from "react-toastify";
+import { fetchBrandList } from "../../../store/Product/Brand/BrandListSlice";
+import { fetchCategoryList } from "../../../store/Product/Categories/CategoriesListSlice";
 import {
   clearbrandAddState,
   fetchbrandAdd,
-} from '../../../store/Product/Brand/AddBrandSlice'
+} from "../../../store/Product/Brand/AddBrandSlice";
+
+import S3 from "react-aws-s3";
+import { Buffer } from "buffer";
+
+// @ts-ignore
+window.Buffer = Buffer;
 
 const AddBrand = (props) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchBrandList())
-    dispatch(fetchCategoryList())
+    dispatch(fetchBrandList());
+    dispatch(fetchCategoryList());
     // dispatch(fetchBarcodeList({ limit, offset: currentPage }));
-  }, [])
+  }, []);
 
-  const { BrandList } = useSelector((state) => state.BrandListSlice)
-  const { CategoryList } = useSelector((state) => state.CategoryListSlice)
+  const { BrandList } = useSelector((state) => state.BrandListSlice);
+  const { CategoryList } = useSelector((state) => state.CategoryListSlice);
 
   const {
     brandAddFetching,
     brandAddSuccess,
     brandAddError,
     brandAddErrorMessage,
-  } = useSelector((state) => state.brandAddSlice)
+  } = useSelector((state) => state.brandAddSlice);
 
-  const [brand_name, setBrandName] = useState('')
-  const [is_popular, setIspopular] = useState(null)
-  const [logo, setSelectedImage] = useState(null)
+  const [brand_name, setBrandName] = useState("");
+  const [is_popular, setIspopular] = useState(null);
+  const [logo, setLogo] = useState(null);
 
   useEffect(() => {
     if (props?.toggle) {
-      setBrandName(''), setIspopular(null), setSelectedImage(null)
+      setBrandName(""), setIspopular(null), setSelectedImage(null);
     }
-  }, [props?.toggle])
+  }, [props?.toggle]);
 
-  const handleSave = () => {
+  const envConfig = process.env;
+
+  const config = {
+    bucketName: "chms-bucket",
+    region: envConfig.REACT_APP_S3_REGION,
+    dirName: "encore",
+    accessKeyId: envConfig.REACT_APP_S3_ACCESS_KEY_ID,
+    secretAccessKey: envConfig.REACT_APP_S3_SECRET_ACCESS_KEY,
+  };
+
+  const ReactS3Client = new S3(config);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+
+  const handleSave = async () => {
+    
+    let url = null;
+    if (selectedImage !== null) {
+      const dat = await ReactS3Client.uploadFile(selectedImage);
+      url = dat.location;
+    }
     let data = {
       logo,
       is_popular,
       brand_name,
+    };
+
+    if (selectedImage !== null) {
+      data.logo = url;
+    }
+    if (selectedImage === null) {
+      delete data.logo;
     }
 
-    let error = undefined
+    let error = undefined;
 
-    if (data.logo === '') {
-      error = 'Please add image'
-    } else if (data.brand_name === '') {
-      error = 'Please enter brand name'
-    } else if (data.is_popular === '') {
-      error = 'Please select popularity'
+    if (data.logo === "") {
+      error = "Please add image";
+    } else if (data.brand_name === "") {
+      error = "Please enter brand name";
+    } else if (data.is_popular === "") {
+      error = "Please select popularity";
     }
     if (error) {
       toast.error(error, {
-        position: 'top-right',
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
-        type: 'error',
-        theme: 'light',
+        type: "error",
+        theme: "light",
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      })
+      });
     } else {
-      let payload = data
+      let payload = data;
 
-      dispatch(fetchbrandAdd({ payload }))
+      dispatch(fetchbrandAdd({ payload }));
     }
-  }
+  };
   useEffect(() => {
     if (brandAddSuccess) {
-      toast.success('Updated successfully', {
-        toastId: 'addUser',
-        position: 'top-right',
+      toast.success("Updated successfully", {
+        toastId: "addUser",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
-        type: 'success',
-        theme: 'light',
+        type: "success",
+        theme: "light",
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      })
-      dispatch(clearbrandAddState())
-      props?.setToggle(false)
+      });
+      dispatch(clearbrandAddState());
+      props?.setToggle(false);
     } else if (brandAddError) {
-      if (brandAddErrorMessage.includes('Email already exists')) {
-        toast.error('Email already exists', {
-          toastId: 'addLawyer',
-          position: 'top-right',
+      if (brandAddErrorMessage.includes("Email already exists")) {
+        toast.error("Email already exists", {
+          toastId: "addLawyer",
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
-          type: 'error',
-          theme: 'light',
+          type: "error",
+          theme: "light",
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-        })
+        });
       } else {
         toast.error({
-          position: 'top-right',
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
-          type: 'error',
-          theme: 'light',
+          type: "error",
+          theme: "light",
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-        })
+        });
       }
-      dispatch(clearbrandAddState())
+      dispatch(clearbrandAddState());
     }
-  }, [brandAddSuccess, brandAddError])
+  }, [brandAddSuccess, brandAddError]);
 
   return (
     <div className="modal" id="modal">
@@ -126,7 +159,7 @@ const AddBrand = (props) => {
         <Modal.Body className="mb--2">
           <Row
             className="justify-content-center align-items-center"
-            style={{ height: '34px' }}
+            style={{ height: "34px" }}
           >
             <Col xl={12}>
               <h5 className="ms-2 text-black">
@@ -139,10 +172,10 @@ const AddBrand = (props) => {
           <Row>
             <Col className="mt-3 d-flex flex-column">
               <Form.Label className="text-black">
-                Image<span style={{ color: 'red' }}>*</span>
+                Image<span style={{ color: "red" }}>*</span>
               </Form.Label>
               <input
-                style={{ border: '1px solid #CCDBE1' }}
+                style={{ border: "1px solid #CCDBE1" }}
                 type="file"
                 className="form-control"
                 name="pic-2"
@@ -152,15 +185,15 @@ const AddBrand = (props) => {
             </Col>
             <Col className="mt-3 d-flex flex-column">
               <Form.Label className="text-black">
-                Brand Name<span style={{ color: 'red' }}>*</span>
+                Brand Name<span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Control
-                style={{ border: '1px solid #b3c3f3' }}
+                style={{ border: "1px solid #b3c3f3" }}
                 className="form-control-md"
                 type="text"
                 value={brand_name}
                 onChange={(e) => {
-                  setBrandName(e.target.value)
+                  setBrandName(e.target.value);
                 }}
               ></Form.Control>
             </Col>
@@ -168,7 +201,7 @@ const AddBrand = (props) => {
           <Row>
             <Col className="mt-3 d-flex flex-column">
               <Form.Label className="text-black">
-                Is popular<span style={{ color: 'red' }}>*</span>
+                Is popular<span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Select onChange={(e) => setIspopular(e.target.value)}>
                 <option value="">Select --</option>
@@ -183,7 +216,7 @@ const AddBrand = (props) => {
             <Button
               onClick={() => props.setToggle(false)}
               className="btn btn-md me-2"
-              style={{ backgroundColor: 'white', color: 'black' }}
+              style={{ backgroundColor: "white", color: "black" }}
               outline
             >
               Cancel
@@ -198,6 +231,6 @@ const AddBrand = (props) => {
         </Row>
       </Modal>
     </div>
-  )
-}
-export default React.memo(AddBrand)
+  );
+};
+export default React.memo(AddBrand);

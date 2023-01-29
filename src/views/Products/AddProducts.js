@@ -11,6 +11,11 @@ import { toast } from 'react-toastify'
 import { fetchBrandList } from '../../store/Product/Brand/BrandListSlice'
 import { fetchCategoryList } from '../../store/Product/Categories/CategoriesListSlice'
 import { addProduct } from '../../store/Product/ProductAddSlice'
+import S3 from "react-aws-s3";
+import { Buffer } from "buffer";
+
+// @ts-ignore
+window.Buffer = Buffer;
 
 const AddProducts = (props) => {
   const dispatch = useDispatch()
@@ -37,7 +42,8 @@ const AddProducts = (props) => {
   const [price_without_VAT, setPriceWithoutVAT] = useState('')
   const [brand, setBrand] = useState('')
   const [category, setCategories] = useState('')
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [image, setImage] = useState(null);
+
 
   useEffect(() => {
     if (props?.toggle) {
@@ -51,7 +57,28 @@ const AddProducts = (props) => {
     }
   }, [props?.toggle])
 
-  const handleAdd = () => {
+  const envConfig = process.env;
+
+  const config = {
+    bucketName: "chms-bucket",
+    region: envConfig.REACT_APP_S3_REGION,
+    dirName: "encore",
+    accessKeyId: envConfig.REACT_APP_S3_ACCESS_KEY_ID,
+    secretAccessKey: envConfig.REACT_APP_S3_SECRET_ACCESS_KEY,
+  };
+
+  const ReactS3Client = new S3(config);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+
+  const handleAdd = async() => {
+
+    let url = null;
+    if (selectedImage !== null) {
+      const dat = await ReactS3Client.uploadFile(selectedImage);
+      url = dat.location;
+    }
+
     let data = {
       product_code,
       description,
@@ -61,6 +88,14 @@ const AddProducts = (props) => {
       brand,
       category,
       selectedImage,
+      image
+    }
+
+    if (selectedImage !== null) {
+      data.image = url;
+    }
+    if (selectedImage === null) {
+      delete data.image;
     }
 
     let error = undefined
