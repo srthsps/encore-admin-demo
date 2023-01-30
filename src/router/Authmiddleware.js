@@ -6,13 +6,13 @@ const Authmiddleware = ({ component: Component, isAuthProtected, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
-      // if (isAuthProtected && !localStorage.getItem("admin-token")) {
-      //   return (
-      //     <Redirect
-      //       to={{ pathname: "/auth/sign-in", state: { from: props.location } }}
-      //     />
-      //   );
-      // }
+      if (isAuthProtected && !localStorage.getItem("admin-token")) {
+        return (
+          <Redirect
+            to={{ pathname: "/auth/sign-in", state: { from: props.location } }}
+          />
+        );
+      }
 
       return <Component {...props} />;
     }}

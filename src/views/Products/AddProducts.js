@@ -75,8 +75,8 @@ const AddProducts = (props) => {
 
     let url = null;
     if (selectedImage !== null) {
-      const dat = await ReactS3Client.uploadFile(selectedImage);
-      url = dat.location;
+      const dat = await ReactS3Client?.uploadFile(selectedImage);
+      url = dat?.location;
     }
 
     let data = {

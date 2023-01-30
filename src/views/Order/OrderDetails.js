@@ -9,9 +9,9 @@ import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { fetchorderDetails } from '../../store/order/OrderDetailsSlice'
 import { clearorderProcessState, fetchorderProcess } from '../../store/order/OrderProcessSlice'
-import { fetchorderShipped } from '../../store/order/OrderShippedSlice'
-import { fetchorderDelivered } from '../../store/order/OrderDeliveredSlice'
-import { fetchorderCancelled } from '../../store/order/OrderCancelledSlice'
+import { clearorderShippedState, fetchorderShipped } from '../../store/order/OrderShippedSlice'
+import { clearorderDeliveredState, fetchorderDelivered } from '../../store/order/OrderDeliveredSlice'
+import { clearorderCancelledState, fetchorderCancelled } from '../../store/order/OrderCancelledSlice'
 
 const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
   const { orderProcessSuccess, orderProcessErrorMessage, orderProcessError } = useSelector((state) => state.orderProcessSlice)
@@ -38,6 +38,7 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
     else if (orderProcessError) {
       toast.error(orderProcessErrorMessage)
 
+
     }
     dispatch(clearorderProcessState())
   }
@@ -50,6 +51,7 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
       toast.error(orderShippedErrorMessage)
 
     }
+    dispatch(clearorderShippedState())
   }
   const handleDelivered = (id) => {
     dispatch(fetchorderDelivered({ orderID: id }))
@@ -60,6 +62,7 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
       toast.error(orderDeliveredErrorMessage)
 
     }
+    dispatch(clearorderDeliveredState())
   }
   const handleCancelled = (id) => {
     dispatch(fetchorderCancelled({ orderID: id }))
@@ -70,6 +73,7 @@ const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
       toast.error(orderCancelledErrorMessage)
 
     }
+    dispatch(clearorderCancelledState())
   }
 
   console.log('feca', orderDetailspro)
