@@ -5,12 +5,9 @@ import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { fetchBrandList } from "../../../store/Product/Brand/BrandListSlice";
 import { fetchCategoryList } from "../../../store/Product/Categories/CategoriesListSlice";
-import {
-  clearbrandAddState,
-  fetchbrandAdd,
-} from "../../../store/Product/Brand/AddBrandSlice";
+
 import { fetchBrandDetails } from "../../../store/Product/Brand/BrandDetails";
-import { fetchbrandEdit } from "../../../store/Product/Brand/EditBrandSlice";
+import { clearbrandEditState, fetchbrandEdit } from "../../../store/Product/Brand/EditBrandSlice";
 
 
 import S3 from "react-aws-s3";
@@ -30,16 +27,15 @@ const EditBrand = (props) => {
   console.log(BrandDetails);
 
   useEffect(() => {
-    dispatch(fetchBrandDetails({ BrandID: props.BrandId }));
     setBrandName(BrandDetails?.brand_name);
     setIspopular(BrandDetails?.is_popular);
-  }, [BrandId ,BrandDetails]);
+  }, [BrandId, BrandDetails]);
 
   useEffect(() => {
-    dispatch(fetchBrandList());
-    dispatch(fetchCategoryList());
-    // dispatch(fetchBarcodeList({ limit, offset: currentPage }));
-  }, []);
+    dispatch(fetchBrandDetails({ BrandID: props.BrandId }));
+    dispatch(fetchBrandList({}));
+    dispatch(fetchCategoryList({}));
+  }, [props.toggle]);
 
   const {
     brandEditFetching,
@@ -102,14 +98,15 @@ const EditBrand = (props) => {
         draggable: true,
         progress: undefined,
       });
-    } else {
+    }
+    else {
       let payload = data;
-
       dispatch(fetchbrandEdit({ payload, brandId: BrandId }));
     }
   };
+
   useEffect(() => {
-    if (brandEditSuccess) {
+    if (brandEditSuccess,brandEditFetching) {
       toast.success("Updated successfully", {
         toastId: "addUser",
         position: "top-right",
@@ -122,11 +119,11 @@ const EditBrand = (props) => {
         draggable: true,
         progress: undefined,
       });
-      dispatch(clearbrandAddState());
+      dispatch(clearbrandEditState());
       props?.setToggle(false);
     } else if (brandEditError) {
       if (brandEditErrorMessage) {
-        toast.error("Email already exists", {
+        toast.error(brandEditErrorMessage, {
           toastId: "addLawyer",
           position: "top-right",
           autoClose: 5000,
@@ -151,9 +148,10 @@ const EditBrand = (props) => {
           progress: undefined,
         });
       }
-      dispatch(clearbrandAddState());
+
+      dispatch(clearbrandEditState());
     }
-  }, [brandEditSuccess, brandEditError]);
+  }, [brandEditSuccess,brandEditFetching, brandEditError]);
 
   return (
     <div className="modal" id="modal">

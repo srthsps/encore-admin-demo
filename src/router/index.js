@@ -13,9 +13,15 @@ import ScrollTop from "../components/ScrollTop";
 
 const userRoutes = [
   { path: "/product/:active_tab?", component: Default },
-  { path: "/", component: () => <Redirect to="/product/:active_tab?" /> },
+  { path: "/", component: () => <Redirect to="/product" /> },
   // { path: "/staff", component: Default },
-  { path: "/order/:active_tab?", component: Default },
+  { path: "/carts", component: Default },
+  { path: "/category", component: Default },
+  { path: "/brand-list", component: Default },
+  { path: "/carts/:cartID/orders", component: Default },
+  { path: "/carts/:id/orders/:id/details/:slId", component: Default },
+ 
+  { path: "/products/:id/:active_tab?", component: Default },
 
   {
     path: "/errors/error404",

@@ -21,13 +21,14 @@ const AddProducts = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchBrandList())
-    dispatch(fetchCategoryList())
-    // dispatch(fetchBarcodeList({ limit, offset: currentPage }));
-  }, [])
+    dispatch(fetchBrandList({}))
+    dispatch(fetchCategoryList({}))
+  }, [props?.toggle])
 
   const { BrandList } = useSelector((state) => state.BrandListSlice)
   const { CategoryList } = useSelector((state) => state.CategoryListSlice)
+
+  console.log("cat", CategoryList);
 
   const {
     addProductFetching,
@@ -71,7 +72,7 @@ const AddProducts = (props) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
 
-  const handleAdd = async() => {
+  const handleAdd = async () => {
 
     let url = null;
     if (selectedImage !== null) {
@@ -100,7 +101,7 @@ const AddProducts = (props) => {
 
     let error = undefined
 
-    if (data.brand.trim() === '') {
+    if (data.brand === '') {
       error = 'Please select brand'
     } else if (data.category === '') {
       error = 'Please select category'
@@ -131,6 +132,7 @@ const AddProducts = (props) => {
       let payload = data
 
       dispatch(addProduct({ payload }))
+      props?.setToggle(false)
     }
   }
   useEffect(() => {

@@ -1,182 +1,268 @@
-import React, { memo, useState, useEffect } from 'react'
-import { Button, Modal, Form, Row, Col, Card, Badge } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-// import {
-//   addBarcode,
-//   clearAddBarcodeState,
-// } from "../../store/barcode/barcodeAddSlice";
-import Select from 'react-select'
+import React, { useEffect, useState } from 'react'
+
+import { useParams, useHistory } from 'react-router-dom'
+import { Card, Row, Col, Badge } from 'react-bootstrap'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { fetchorderDetails } from '../../store/order/OrderDetailsSlice'
-import { clearorderProcessState, fetchorderProcess } from '../../store/order/OrderProcessSlice'
-import { clearorderShippedState, fetchorderShipped } from '../../store/order/OrderShippedSlice'
-import { clearorderDeliveredState, fetchorderDelivered } from '../../store/order/OrderDeliveredSlice'
-import { clearorderCancelledState, fetchorderCancelled } from '../../store/order/OrderCancelledSlice'
 
-const OrderDetails = memo(({ toggle, setToggle, orderID }) => {
-  const { orderProcessSuccess, orderProcessErrorMessage, orderProcessError } = useSelector((state) => state.orderProcessSlice)
-  const { orderShippedSuccess, orderShippedFetching, orderShippedErrorMessage, orderShippedError } = useSelector((state) => state.orderShippedSlice)
-  const { orderCancelledSuccess, orderCancelledError, orderCancelledFetching, orderCancelledErrorMessage } = useSelector((state) => state.orderCancelledSlice)
-  const { orderDeliveredSuccess, orderDeliveredErrorMessage, orderDeliveredError, orderDeliveredFetching } = useSelector((state) => state.orderDeliveredSlice)
-  const dispatch = useDispatch()
-  console.log(orderProcessErrorMessage);
+const OrderDetails = () => {
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const { id, slId } = useParams()
 
+    const [newProduct, setNewProduct] = useState([])
+    const [filterPro, setFilterPro] = useState({})
 
-  useEffect(() => {
-    dispatch(fetchorderDetails({ orderID }))
-  }, [toggle])
+    const { orderDetails } = useSelector((state) => state.orderDetailsSlice)
+    useEffect(() => {
+        if (id !== null && id !== undefined) {
+            dispatch(fetchorderDetails({ orderID: id }))
+        }
+    }, [id])
 
-  const { orderDetails, orderDetailspro, orderDetailsStatus } = useSelector(
-    (state) => state.orderDetailsSlice,
-  )
+    useEffect(() => {
+        if (orderDetails?.products?.length > 0) {
+            let data = orderDetails.products.map((item, idx) => {
+                return {
+                    ...item,
+                    sl: idx + 1,
+                }
+            })
+            setNewProduct(data)
+        }
+    }, [orderDetails])
 
-  const handleProcess = (id) => {
-    dispatch(fetchorderProcess({ orderID: id }))
-    if (orderProcessSuccess) {
-      toast.success("Status Changed to processing")
-    }
-    else if (orderProcessError) {
-      toast.error(orderProcessErrorMessage)
+    const FliterProduct = newProduct.filter((item) => item.sl == slId)
 
+    return (
+        <div>
+            <div className="page-title-box">
+                <Row className=" mb-1">
+                    <Link
+                        to={`/carts/${id}/orders`}
+                        className=" text-primary d-inline-flex align-items-center mb-3"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            className="bi bi-caret-left-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+                        </svg>
+                        Back to Orders
+                    </Link>
+                    <h5 className="mb-4 ms-2">Order Details</h5>
+                </Row>
+                <Card
+                    className="p-2"
+                    style={{ border: '1px solid #b3c3f3', borderRadius: '6px' }}
+                >
+                    <Card.Body>
+                        <div className="">
+                            <Row className="d-flex flex-row ">
+                                <Col className="col-4 ms-5 text-start">
+                                    <Row className="mt-2">
+                                        <div className="d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                User
+                                            </p>
+                                            <p className="col-6">{orderDetails?.Name}</p>
+                                        </div>
+                                    </Row>
+                                    {/* <Row className="mt-2">
+                                        <div className="d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: "600" }}
+                                            >
+                                                Staff Name
+                                            </p>
+                                            <p className="col-6">{orderDetails?.created_user}</p>
+                                        </div>
+                                    </Row> */}
+                                    <Row className="mt-2">
+                                        <div className="d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                Total Price
+                                            </p>
+                                            <p className="col-6">₹ {orderDetails?.total_price}</p>
+                                        </div>
+                                    </Row>
+                                    <Row className="mt-2 ">
+                                        <div className=" d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                Ordered Date
+                                            </p>
+                                            <p className="col-6">
+                                                {orderDetails?.date_created?.slice(0, 10)}
+                                            </p>
+                                        </div>
+                                    </Row>
+                                    <Row className="mt-2 ">
+                                        <div className=" d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                Order Status
+                                            </p>
+                                            <p className="col-6">
+                                                {orderDetails.status === 0 ? (
+                                                    <Badge bg="warning" style={{ width: '6rem' }}>
+                                                        Pending
+                                                    </Badge>
+                                                ) : orderDetails.status === 1 ? (
+                                                    <Badge bg="primary" style={{ width: '6rem' }}>
+                                                        Processing
+                                                    </Badge>
+                                                ) : orderDetails.status === 2 ? (
+                                                    <Badge bg="dark" style={{ width: '6rem' }}>
+                                                        Shipped
+                                                    </Badge>
+                                                ) : orderDetails.status === 3 ? (
+                                                    <Badge bg="success" style={{ width: '6rem' }}>
+                                                        Delivered
+                                                    </Badge>
+                                                ) : orderDetails.status === 4 ? (
+                                                    <Badge bg="danger" style={{ width: '6rem' }}>
+                                                        {' '}
+                                                        Cancelled{' '}
+                                                    </Badge>
+                                                ) : null}
+                                            </p>
+                                        </div>
+                                    </Row>
+                                </Col>
 
-    }
-    dispatch(clearorderProcessState())
-  }
-  const handleShipped = (id) => {
-    dispatch(fetchorderShipped({ orderID: id }))
-    if (orderShippedSuccess) {
-      toast.success("Status Changed to Shipped")
-    }
-    else if (orderShippedError) {
-      toast.error(orderShippedErrorMessage)
+                                <Col className="col-4">
+                                    <Row className="mt-2 ">
+                                        <div className=" d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                Email
+                                            </p>
+                                            <p className="col-6">{orderDetails?.Email}</p>
+                                        </div>
+                                    </Row>
+                                    <Row className="mt-2 ">
+                                        <div className=" d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                Mobile
+                                            </p>
+                                            <p className="col-6">{orderDetails?.Phone}</p>
+                                        </div>
+                                    </Row>
+                                    <Row className="mt-2 ">
+                                        <div className=" d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                Ordered Time
+                                            </p>
+                                            <p className="col-6">
+                                                {orderDetails?.date_created?.slice(12, 20)}
+                                            </p>
+                                        </div>
+                                    </Row>
 
-    }
-    dispatch(clearorderShippedState())
-  }
-  const handleDelivered = (id) => {
-    dispatch(fetchorderDelivered({ orderID: id }))
-    if (orderDeliveredSuccess) {
-      toast.success("Status Changed to Delivered")
-    }
-    else if (orderDeliveredError) {
-      toast.error(orderDeliveredErrorMessage)
+                                    <Row className="mt-2">
+                                        <div className=" d-flex  align-items-center">
+                                            <p
+                                                className="col-6 text-black"
+                                                style={{ fontWeight: '600' }}
+                                            >
+                                                Address
+                                            </p>
+                                            <p className="col-6">{orderDetails?.street_address}</p>
+                                        </div>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Card.Body>
+                </Card>
+                <h5 className="mb-4 ms-2">Ordered Product</h5>
+                <Card
+                    className="p-2"
+                    style={{ border: '1px solid #b3c3f3', borderRadius: '6px' }}
+                >
+                    <Card.Body>
+                        <div className=" d-flex justify-content-start">
+                            {FliterProduct?.map((productData) => {
+                                return (
+                                    <>
+                                        <img
+                                            src={productData?.image}
+                                            alt=""
+                                            className="img-fluid"
+                                            style={{ width: '450px', borderRadius: '6px' }}
+                                        />
+                                        <div className="ms-5 mt-2">
+                                            <h4 className="text-black">
+                                                Brand Name :{' '}
+                                                <span
+                                                    className="text-primary"
+                                                    style={{ fontSize: '19px' }}
+                                                >
+                                                    {productData?.brand}
+                                                </span>
+                                            </h4>
+                                            <h4 className="text-black">
+                                                Product Code :{' '}
+                                                <span
+                                                    className="text-primary"
+                                                    style={{ fontSize: '19px' }}
+                                                >
+                                                    {productData?.product_code}
+                                                </span>
+                                            </h4>
+                                            <h4 className="text-black">
+                                                Quantity :{' '}
+                                                <span
+                                                    className="text-primary"
+                                                    style={{ fontSize: '19px' }}
+                                                >
+                                                    {productData?.quantity}
+                                                </span>
+                                            </h4>
+                                            <h4 className="text-black">
+                                                Price per Item :{' '}
+                                                <span
+                                                    className="text-primary"
+                                                    style={{ fontSize: '19px' }}
+                                                >
+                                                    ₹ {productData.price}
 
-    }
-    dispatch(clearorderDeliveredState())
-  }
-  const handleCancelled = (id) => {
-    dispatch(fetchorderCancelled({ orderID: id }))
-    if (orderCancelledSuccess) {
-      toast.success("Status Changed to Cancelled")
-    }
-    else if (orderCancelledError) {
-      toast.error(orderCancelledErrorMessage)
-
-    }
-    dispatch(clearorderCancelledState())
-  }
-
-  console.log('feca', orderDetailspro)
-
-  return (
-    <div className="modal" id="modal">
-      <Modal centered show={toggle} onHide={() => setToggle(false)} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Order Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="p-3 px-4">
-          <Row>
-            <Col>
-              Change Order Status
-              <Badge style={{ cursor: "pointer" }} onClick={() => handleProcess(orderDetails.id)} className=' pt-2 pb-2 ps-2 pe-2' bg="primary ms-3 ">Processing</Badge>
-              <Badge style={{ cursor: "pointer" }} onClick={() => handleShipped(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="warning ms-3">Shipped</Badge>
-              <Badge style={{ cursor: "pointer" }} onClick={() => handleDelivered(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="success ms-3 ">Delivered</Badge>
-              <Badge style={{ cursor: "pointer" }} onClick={() => handleCancelled(orderDetails.id)} className='pt-2 pb-2 ps-2 pe-2' bg="danger ms-3 ">Cancelled</Badge>
-            </Col>
-          </Row>
-          <hr />
-          <Row className="bg-">
-            <Col>Customer</Col>
-            <Col>Products</Col>
-
-            <hr />
-          </Row>
-          {/* customer */}
-          <Row>
-            <Col>
-              <Card.Title>
-                Name :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.Name}</span>
-              </Card.Title>
-              <Card.Title>
-                Phone :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.Phone}</span>
-              </Card.Title>
-              <Card.Title>
-                Email :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.Email}</span>
-              </Card.Title>
-              <Card.Title>
-                Street address :{' '}
-                <span style={{ color: 'gray' }}>
-                  {orderDetails.street_address}
-                </span>
-              </Card.Title>
-              <Card.Title>
-                Country :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.country}</span>
-              </Card.Title>
-              <Card.Title>
-                City :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.city}</span>
-              </Card.Title>
-              <Card.Title>
-                State :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.state}</span>
-              </Card.Title>
-              <Card.Title>
-                District :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.district}</span>
-              </Card.Title>
-              <Card.Title>
-                Zipcode :{' '}
-                <span style={{ color: 'gray' }}>{orderDetails.zipcode}</span>
-              </Card.Title>
-            </Col>
-
-            {/* Products */}
-            <Col>
-              {orderDetailspro.map((item, index) => {
-                return (
-                  <>
-                    <Card.Title>
-                      Brand :{' '}
-                      <span style={{ color: 'gray' }}>{item.brand}</span>
-                    </Card.Title>
-                    <Card.Title>
-                      Product code :{' '}
-                      <span style={{ color: 'gray' }}>{item.product_code}</span>
-                    </Card.Title>
-                    <Card.Title>
-                      Quantity :{' '}
-                      <span style={{ color: 'gray' }}>{item.quantity}</span>
-                    </Card.Title>
-                    <Card.Title>
-                      Total price :{' '}
-                      <span style={{ color: 'gray' }}>
-                        ₹{orderDetails.total_price}
-                      </span>
-                    </Card.Title>
-                    <hr />
-                  </>
-                )
-              })}
-            </Col>
-          </Row>
-        </Modal.Body>
-      </Modal>
-    </div>
-  )
-})
-
-export default memo(OrderDetails)
+                                                </span>
+                                            </h4>
+                                        </div>
+                                    </>
+                                )
+                            })}
+                        </div>
+                    </Card.Body>
+                </Card>
+            </div>
+        </div>
+    )
+}
+export default OrderDetails

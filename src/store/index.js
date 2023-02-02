@@ -22,6 +22,7 @@ import staffDetailsSlice from "./usermanagement/staff/staffDetailsSlice";
 import staffEditSlice from "./usermanagement/staff/staffEditSlice";
 import staffAddSlice from "./usermanagement/staff/staffAddSlice";
 import orderListSlice from "./order/OrderListSlice";
+import orderStatusUpdateSlice from "./order/OrderStatusSlice";
 import orderShippedSlice from "./order/OrderShippedSlice";
 import orderProcessSlice from "./order/OrderProcessSlice";
 import orderCancelledSlice from "./order/OrderCancelledSlice";
@@ -70,6 +71,7 @@ export const store = configureStore({
     orderDeliveredSlice,
     orderCancelledSlice,
     orderDeleteSlice,
+    orderStatusUpdateSlice,
 
     //Category
 

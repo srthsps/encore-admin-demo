@@ -124,20 +124,20 @@ const VerticalNav = memo(() => {
         </li> */}
         <li
           style={
-            location.pathname === `/product/${active_tab}`
+            location.pathname === `/product`
               ? { background: '#eff8fb', borderRadius: '6px' }
               : {}
           }
           className={`${
-            location.pathname === `/product/${active_tab}` ? 'active' : ''
+            location.pathname === `/product` ? 'active' : ''
           } nav-item `}
         >
           <Link
             className={`${
-              location.pathname === `/product/${active_tab}` ? 'active' : ''
+              location.pathname === `/product` ? 'active' : ''
             } nav-link `}
             aria-current="page"
-            to="/product/Product-list"
+            to="/product"
           >
             <OverlayTrigger
               placement="right"
@@ -148,11 +148,11 @@ const VerticalNav = memo(() => {
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
-                  fill="currentColor"
-                  class="bi bi-shop-window"
+                  fill="#22D3EE"
+                  class="bi bi-basket3-fill"
                   viewBox="0 0 16 16"
                 >
-                  <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h12V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zm2 .5a.5.5 0 0 1 .5.5V13h8V9.5a.5.5 0 0 1 1 0V13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a.5.5 0 0 1 .5-.5z" />
+                  <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z" />
                 </svg>
               </i>
             </OverlayTrigger>
@@ -164,39 +164,130 @@ const VerticalNav = memo(() => {
             </span>
           </Link>
         </li>
+        {/* //brand */}
         <li
           style={
-            location.pathname === `/order/${active_tab}`
+            location.pathname.includes('/brand-list')
               ? { background: '#eff8fb', borderRadius: '6px' }
               : {}
           }
           className={`${
-            location.pathname === `/order/${active_tab}` ? 'active' : ''
+            location.pathname.includes('/brand-list') ? 'active' : ''
           } nav-item `}
         >
           <Link
             className={`${
-              location.pathname === `/order/${active_tab}` ? 'active' : ''
+              location.pathname.includes('/brand-list') ? 'active' : ''
             } nav-link `}
             aria-current="page"
-            to="/order/order-list"
+            to="/brand-list"
           >
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Order</Tooltip>}
+              overlay={<Tooltip>Brand list</Tooltip>}
             >
               <i className="icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
-                  fill="currentColor"
-                  class="bi bi-list-ul"
+                  fill="#22D3EE"
+                  class="bi bi-file-earmark-fill"
                   viewBox="0 0 16 16"
+                >
+                  <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z" />
+                </svg>
+              </i>
+            </OverlayTrigger>
+            <span
+              className="item-name text-black"
+              style={{ fontWeight: '600' }}
+            >
+              Brand list
+            </span>
+          </Link>
+        </li>
+
+        {/* //category */}
+        <li
+          style={
+            location.pathname.includes('/category')
+              ? { background: '#eff8fb', borderRadius: '6px' }
+              : {}
+          }
+          className={`${
+            location.pathname.includes('/category') ? 'active' : ''
+          } nav-item `}
+        >
+          <Link
+            className={`${
+              location.pathname.includes('/category') ? 'active' : ''
+            } nav-link `}
+            aria-current="page"
+            to="/category"
+          >
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>Category</Tooltip>}
+            >
+              <i className="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="#22D3EE"
+                  class="bi bi-bookmarks-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4z" />
+                  <path d="M4.268 1A2 2 0 0 1 6 0h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L13 13.768V2a1 1 0 0 0-1-1H4.268z" />
+                </svg>
+              </i>
+            </OverlayTrigger>
+            <span
+              className="item-name text-black"
+              style={{ fontWeight: '600' }}
+            >
+              Category
+            </span>
+          </Link>
+        </li>
+
+        {/* //order */}
+        <li
+          style={
+            location.pathname.includes('/carts')
+              ? { background: '#eff8fb', borderRadius: '6px' }
+              : {}
+          }
+          className={`${
+            location.pathname.includes('/carts') ? 'active' : ''
+          } nav-item `}
+        >
+          <Link
+            className={`${
+              location.pathname.includes('/carts') ? 'active' : ''
+            } nav-link `}
+            aria-current="page"
+            to="/carts"
+          >
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>Orders</Tooltip>}
+            >
+              <i className="icon">
+                <svg
+                  width="16"
+                  height="17"
+                  viewBox="0 0 16 17"
+                  fill="#22D3EE"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     fill-rule="evenodd"
-                    d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                    clip-rule="evenodd"
+                    d="M0 0.824184V1.64833L0.810694 1.65841L1.62139 1.66853L3.04034 4.66012C3.82076 6.30549 4.4593 7.66914 4.4593 7.69038C4.4593 7.71167 4.21509 8.17124 3.91658 8.71164C3.61811 9.25208 3.34699 9.7586 3.31412 9.83726C3.01546 10.5521 3.35703 11.4734 4.05156 11.8263C4.46773 12.0377 4.23124 12.0289 9.52754 12.0294L14.4272 12.0298V11.2242V10.4185H9.76175C5.10751 10.4185 5.09616 10.4183 5.01949 10.3416C4.91932 10.2415 4.92374 10.2293 5.33576 9.47429L5.67718 8.84864L8.80618 8.83673C11.6641 8.82582 11.9519 8.81915 12.1281 8.75946C12.4035 8.66619 12.7535 8.42025 12.903 8.21505C13.0282 8.04327 15.796 3.05301 15.9313 2.75529C16.1266 2.32543 15.8878 1.7887 15.4419 1.65508C15.3375 1.62382 13.697 1.61232 9.34138 1.61232H3.38371L3.0092 0.816015L2.6347 0.0197109L1.31733 0.00985545L0 0V0.824184ZM4.36562 12.8693C3.92572 13.0088 3.55609 13.331 3.36303 13.7433C3.13586 14.2285 3.18683 14.8754 3.4865 15.311C4.19856 16.3459 5.73226 16.2114 6.27087 15.0669C6.58208 14.4055 6.35151 13.5522 5.74388 13.1171C5.36716 12.8473 4.77224 12.7404 4.36562 12.8693ZM12.3039 12.8921C12.0532 12.9738 11.7446 13.1851 11.5746 13.3913C10.9096 14.1982 11.181 15.4113 12.1268 15.8585C12.7435 16.1501 13.4066 16.041 13.9046 15.5661C14.7173 14.7908 14.5127 13.4778 13.5013 12.9779C13.2477 12.8526 13.1851 12.8375 12.8771 12.8277C12.6133 12.8193 12.4818 12.8341 12.3039 12.8921Z"
+                    fill="#22D3EE"
                   />
                 </svg>
               </i>
@@ -205,7 +296,7 @@ const VerticalNav = memo(() => {
               className="item-name text-black"
               style={{ fontWeight: '600' }}
             >
-              Order
+              Orders
             </span>
           </Link>
         </li>

@@ -1,105 +1,111 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import { clearCategoryAddState, fetchCategoryAdd } from '../../../store/Product/Categories/AddCategorySlice';
-import { fetchCategoryList } from '../../../store/Product/Categories/CategoriesListSlice';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import {
+    clearCategoryAddState,
+    fetchCategoryAdd,
+} from '../../../store/Product/Categories/AddCategorySlice'
+import { fetchCategoryList } from '../../../store/Product/Categories/CategoriesListSlice'
 
 const AddCategory = (props) => {
-
     const dispatch = useDispatch()
 
-    const [category_name, setCategoryName] = useState("")
+    const [category_name, setCategoryName] = useState('')
 
-    const {CategoryAddSuccess,CategoryAddFetching,CategoryAddError,CategoryAddErrorMessage,} = useSelector((state)=>state.CategoryAddSlice)
+    const {
+        CategoryAddSuccess,
+        CategoryAddFetching,
+        CategoryAddError,
+        CategoryAddErrorMessage,
+    } = useSelector((state) => state.CategoryAddSlice)
 
     useEffect(() => {
         if (props?.toggle) {
-            setCategoryName("")
-
+            setCategoryName('')
         }
-    }, [props?.toggle]);
+    }, [props?.toggle])
 
     useEffect(() => {
         dispatch(fetchCategoryList())
-    }, [CategoryAddSuccess,CategoryAddFetching])
-    
+    }, [CategoryAddSuccess, CategoryAddFetching])
 
     const handleSave = () => {
         let data = {
-            category_name
-        };
+            category_name,
+        }
 
-        let error = undefined;
+        let error = undefined
 
-        if (data.category_name === "") {
-            error = "Please enter category name";
+        if (data.category_name === '') {
+            error = 'Please enter category name'
         }
         if (error) {
             toast.error(error, {
-                position: "top-right",
+                position: 'top-right',
                 autoClose: 5000,
                 hideProgressBar: false,
-                type: "error",
-                theme: "light",
+                type: 'error',
+                theme: 'light',
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-            });
+            })
         } else {
-            let payload = data;
+            let payload = data
 
-            dispatch(fetchCategoryAdd({ payload }));
+            dispatch(fetchCategoryAdd({ payload }))
         }
-    };
+    }
     useEffect(() => {
         if (CategoryAddSuccess) {
-            toast.success("Updated successfully", {
-                toastId: "addCategory",
-                position: "top-right",
+            toast.success('Added successfully', {
+                toastId: 'addCategory',
+                position: 'top-right',
                 autoClose: 5000,
                 hideProgressBar: false,
-                type: "success",
-                theme: "light",
+                type: 'success',
+                theme: 'light',
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-            });
-            dispatch(clearCategoryAddState());
-            props?.setToggle(false);
+            })
+            dispatch(fetchCategoryList({}))
+            dispatch(clearCategoryAddState())
+            props?.setToggle(false)
         } else if (CategoryAddError) {
-            if (CategoryAddErrorMessage.includes("Email already exists")) {
-                toast.error("Email already exists", {
-                    toastId: "addCategory",
-                    position: "top-right",
+            if (CategoryAddErrorMessage) {
+                toast.error(CategoryAddErrorMessage, {
+                    toastId: 'addCategory',
+                    position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
-                    type: "error",
-                    theme: "light",
+                    type: 'error',
+                    theme: 'light',
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                });
+                })
             } else {
                 toast.error({
-                    position: "top-right",
+                    position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
-                    type: "error",
-                    theme: "light",
+                    type: 'error',
+                    theme: 'light',
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                });
+                })
             }
-            dispatch(clearCategoryAddState());
+            dispatch(clearCategoryAddState())
         }
-    }, [CategoryAddSuccess, CategoryAddError]);
+    }, [CategoryAddSuccess, CategoryAddError])
 
     return (
         <div className="modal" id="modal">
@@ -111,17 +117,18 @@ const AddCategory = (props) => {
                     <Form.Group className="mb-3" controlId="formBasicText">
                         <Row className="mt-3">
                             <Col>
-                                <Form.Label className="text-black">Category Name<span style={{ color: "red" }}>*</span></Form.Label>
+                                <Form.Label className="text-black">
+                                    Category Name<span style={{ color: 'red' }}>*</span>
+                                </Form.Label>
                                 <Form.Control
-                                    style={{ border: "1px solid #b3c3f3" }}
+                                    style={{ border: '1px solid #b3c3f3' }}
                                     className="form-control-md"
                                     type="text"
                                     value={category_name}
                                     onChange={(e) => {
-                                        setCategoryName(e.target.value);
+                                        setCategoryName(e.target.value)
                                     }}
                                 ></Form.Control>
-
                             </Col>
                         </Row>
                     </Form.Group>
@@ -129,13 +136,11 @@ const AddCategory = (props) => {
                         <Button
                             onClick={() => props.setToggle(false)}
                             className="btn btn-md me-3"
-                            style={{ backgroundColor: "white", color: "black" }}
+                            style={{ backgroundColor: 'white', color: 'black' }}
                         >
                             Cancel
                         </Button>
-                        <Button variant="primary"
-                            onClick={handleSave}
-                        >
+                        <Button variant="primary" onClick={handleSave}>
                             Save
                         </Button>
                     </div>

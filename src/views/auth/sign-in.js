@@ -57,7 +57,7 @@ const SignIn = memo(() => {
   }
   
   if (loginSuccess) {
-    history.push("/product/Product-list");
+    history.push("/product");
     toast.success("login success");
 
   }
@@ -108,11 +108,12 @@ const SignIn = memo(() => {
                     <Form   >
                       <Row>
                         <Col lg="12">
-                          <Form.Group className="form-group">
+                          <Form.Group className="form-group  ">
                             <Form.Label htmlFor="email" className="">
                               Username
                             </Form.Label>
                             <Form.Control
+                            style={{ border: '1px solid #05B59B' }}
                               type="text"
                               className=""
                               value={username}
@@ -129,6 +130,7 @@ const SignIn = memo(() => {
                               Password
                             </Form.Label>
                             <Form.Control
+                            style={{ border: '1px solid #05B59B' }}
                               type="password"
                               className=""
                               value={password}

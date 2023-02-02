@@ -5,19 +5,24 @@ import { Switch, Route } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import Loading1 from "../components/custom/loading1";
-import BrandList from "../views/Products/Brand/BrandList";
 // import ProductList from "../views/Products/Index";
 
 //Dashboard
 // const Index = lazy(() => import("../views/dashboard/index"));
 
 //Product
-const ProductDashboard = lazy(() => import("../views/Products/Dashboard"));
+const ProductList = lazy(() => import("../views/Products/Index.js"));
+const ProductDetails = lazy(() => import("../views/Products/Dashboard"));
 
-//Barcode
-const OrderDashboard = lazy(() => import("../views/Order/Dashboard"));
-//brand
-const BrandDashboard = lazy(() => import("../views/Order/Dashboard"));
+// orders
+const Carts = lazy(() => import("../views/Order/Index"));
+const Orders = lazy(() => import("../views/Order/Orders"));
+const OrderDetails = lazy(() => import("../views/Order/OrderDetails"));
+
+// brand 
+const brand = lazy(() => import("../views/Products/Brand/BrandList"));
+// category 
+const category = lazy(() => import("../views/Products/Category/Category"));
 
 //Profile
 const UserProfile = lazy(() => import("../views/Profile/ProfileDashboard"));
@@ -29,11 +34,17 @@ const DefaultRouter = memo(() => {
         <Suspense fallback={<Loading1 />}>
           <Switch>
             {/* <Route path="/dashboard" exact component={Index} /> */}
-     
-            <Route  path="/product:active_tab?"  component={ProductDashboard  } />
 
-            <Route exact path="/order/:active_tab?" component={OrderDashboard} />
-            <Route exact path="/brand/:active_tab?" component={BrandDashboard} />
+            <Route exact path="/product" component={ProductList} />
+            <Route exact path="/products/:id/:active_tab?" component={ProductDetails} />
+
+            <Route exact path="/carts" component={Carts} />
+            <Route exact path="/category" component={category} />
+            <Route exact path="/carts/:id/orders" component={Orders} />
+            <Route path="/carts/:id/orders/:id/details/:slId" component={OrderDetails} />
+
+            <Route exact path="/brand-list" component={brand} />
+
 
             <Route path="/staff-profile" component={UserProfile} />
           </Switch>

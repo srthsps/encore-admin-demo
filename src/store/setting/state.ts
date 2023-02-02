@@ -19,9 +19,9 @@ export const initialState: SettingState = {
     },
     theme_color: {
       colors: {
-        "--{{prefix}}primary": "#018EC5",
-        "--{{prefix}}secondary": "#b3c3f3",
-        "--{{prefix}}info": "#018EC5",
+        "--{{prefix}}primary": "#06B6D4",
+        "--{{prefix}}secondary": "#06B6D4",
+        "--{{prefix}}info": "#22D3EE",
       },
       value: "theme-color-default",
     },
@@ -102,8 +102,8 @@ export const defaultState: SettingDefaultState = {
       ],
       type: "default",
       colors: {
-        "--{{prefix}}primary": "#018EC5",
-        "--{{prefix}}info": "#018EC5",
+        "--{{prefix}}primary": "#22D3EE",
+        "--{{prefix}}info": "#06B6D4",
       },
       value: "theme-color-default",
     },

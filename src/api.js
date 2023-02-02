@@ -96,10 +96,11 @@ export default {
   // orderList: "/orders/?limit={limit}&offset={offset}",
   orderDeleteURL: '/web_admin/orders/{id}',
   orderDetails: '/web_admin/orders/{id}',
-  orderProcessing: '/web_admin/order/processing/{id}',
-  orderShipped: '/web_admin/order/shipped/{id}',
-  orderDelivered: '/web_admin/order/delivered/{id}',
-  orderCancelled: '/web_admin/order/cancelled/{id}',
+  orderStatusURL: '/web_admin/order/status/{id}',
+  // orderProcessing: '/web_admin/order/processing/{id}',
+  // orderShipped: '/web_admin/order/shipped/{id}',
+  // orderDelivered: '/web_admin/order/delivered/{id}',
+  // orderCancelled: '/web_admin/order/cancelled/{id}',
 
   actionHandler,
 }

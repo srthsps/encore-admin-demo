@@ -1,5 +1,5 @@
 import React, { useRef, memo, useState, useEffect, useCallback } from 'react'
-import { Button, Card, Row, Col, Image } from 'react-bootstrap'
+import { Button, Card, Row, Col, Image, Table } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { fetchBarcodeList } from '../../store/barcode/barcodeListSlice'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,16 +8,19 @@ import PaginationComponent from '../../components/custom/paginationComponent'
 import QRCode from 'react-qr-code'
 import NodataAnimation from '../../components/custom/NodataAnimation'
 import { fetchProductList } from '../../store/Product/ProductListSlice'
-import AddBarcode from '../Order/OrderDetails'
 import AddProducts from './AddProducts'
+import { Link, useHistory } from 'react-router-dom'
 import {
   clearproductDeleteState,
   deleteproduct,
 } from '../../store/Product/ProductDeleteSlice'
 import { Icons } from 'react-toastify'
 import EditProduct from './EditProduct'
+import { deleteSvg, editSvg, viewSvg } from '../../components/custom/buttonSvg'
+import Swal from 'sweetalert2'
 
 const ProductList = () => {
+  const history = useHistory()
   const dispatch = useDispatch()
   const [addProduct, setAddProduct] = useState(false)
   const [editProduct, setEditProduct] = useState(false)
@@ -26,14 +29,16 @@ const ProductList = () => {
   const { active_tab } = useParams()
   const [productId, setProductId] = useState()
 
-  const handleDelete = (id) => {
-    dispatch(deleteproduct({ productID: id }))
-    dispatch(clearproductDeleteState())
+
+  const handleView = (e, id) => {
+    history.push(`/products/${id}/details`)
   }
+
+  const { editProductSuccess,editProductFetching, editProductError } =
+  useSelector((state) => state.EditProductSlice);
 
   useEffect(() => {
     dispatch(fetchProductList({ limit, offset: currentPage }))
-    // dispatch(fetchBarcodeList({ limit, offset: currentPage }));
   }, [])
 
   const { ProductsList, ProductCount } = useSelector(
@@ -51,29 +56,59 @@ const ProductList = () => {
   }, [
     addProductFetching,
     addProductSuccess,
+    editProductFetching,
+    editProductSuccess,
     productDeleteSuccess,
     limit,
     currentPage,
   ])
 
-  const handleEdit = (id) => {
+  const handleEdit = (e,id) => {
+    e.preventDefault();
     setProductId(id)
     setEditProduct(true)
   }
 
-  // useEffect(() => {
-  //   if (ProductsList.length > 0) {
-  //     let barcodes = ProductsList.map((item, idx) => {
-  //       return {
-  //         ...item,
-  //         sl: idx + 1,
-  //       };
-  //     });
-  //     setData({ ...data, rows: barcodes });
-  //   } else {
-  //     setData({ ...data, rows: [] });
-  //   }
-  // }, [ProductsList]);
+  const handleDelete = (e,id) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: `rgba(60,60,60,0.8)`,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your data has been deleted.", "success");
+        dispatch(deleteproduct({ productID: id }))
+        dispatch(clearproductDeleteState())
+        history.push("/product");
+      }
+    });
+  };
+
+  const [userData, setUserData] = useState({
+    columns: ['Brand Name', 'Image', 'Product Code', 'Category', 'Actions'],
+    rows: [],
+  })
+
+  useEffect(() => {
+    if (ProductsList.length > 0) {
+      let data = ProductsList.map((item, idx) => {
+        return {
+          ...item,
+          sl: idx + 1,
+          role: <span className="ps-4">{item.role}</span>,
+          actionadd: editSvg,
+        }
+      })
+      setUserData({ ...userData, rows: data })
+    } else {
+      setUserData({ ...userData, rows: [] })
+    }
+  }, [ProductsList])
+
 
   return (
     <>
@@ -84,20 +119,167 @@ const ProductList = () => {
         productId={productId}
       />
 
-      <div className="d-flex flex-md-row flex-column justify-content-between align-items-center col-12 my-2">
-        {/* <h5 className="mb-4">Products List</h5> */}
-        <div className="col-12 col-md-4"></div>
-        <div className="col-12 col-md-4 text-end mt-3 mt-md-0">
+      <h5 className="mb-0">Products</h5>
+      <div className="mt-5">
+        <Card>
+          <Card.Body>
+            <div className="d-flex flex-md-row flex-column justify-content-between align-items-center col-12 my-3">
+              <div className="col-12 col-md-4">
+                {/* <div className="input-group col-md-4" style={{ border: 'none' }}>
+              <span
+                className="input-group-append py-2"
+                style={{ border: 'none' }}
+              >
+                <div className="btn btn-sm ">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-search"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                  </svg>
+                </div>
+              </span> */}
+                {/* <input
+                className="form-control py-2"
+                type="search"
+                style={{
+                  border: 'none',
+                  color: 'black',
+                  backgroundColor: '#eff8fb',
+                }}
+                placeholder="Search by  name"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              /> */}
+                {/* </div> */}
+              </div>
+              <div className="col-6 col-md-4 text-end mt-3 mt-md-0">
+                <Button
+                  onClick={() => setAddProduct(true)}
+                  className="me-4 col-12 col-md-4  hvr-sweep-to-bottom"
+                >
+                  Add New
+                </Button>
+              </div>
+            </div>
+
+            <Card.Body>
+              <div className="custom-table-effect table-responsive">
+                <Table>
+                  <thead>
+                    <tr
+                      className="rounded"
+                      style={{
+                        backgroundColor: '#eff8fb',
+                        borderRadius: '15px',
+                      }}
+                    >
+                      {userData?.columns?.map((item, idx) => {
+                        return (
+                          <th className="text-black" id={idx}>
+                            {item}
+                          </th>
+                        )
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody className="">
+                    {userData?.rows?.map((item, idx) => {
+                      return (
+                        <tr className="py-4" id={idx + 1}>
+                          <td className="text-black">{item?.brand_name}</td>
+                          <td className="text-black">
+                            <img
+                              src={item?.image}
+                              height="50px"
+                              width="50px"
+                              alt="image"
+                            />
+                          </td>
+                          <td className="text-black">{item?.product_code}</td>
+                          <td className="text-black">{item?.category_name}</td>
+                          <td>
+                            <Button
+                              className="btn btn-primary btn-icon btn-sm rounded-pill ms-1"
+                              style={{ background: '#eff8fb' }}
+                              onClick={(e) => {
+                                handleView(e, item.id)
+                                // setSelectedID(item.id);
+                                // setToggleEditUser(true);
+                              }}
+                              role="button"
+                            >
+                              <span className="btn-inner text-primary">
+                                {viewSvg}
+                              </span>
+                            </Button>
+
+                            <Button
+                              className="btn btn-primary btn-icon btn-sm rounded-pill ms-1"
+                              style={{ background: '#eff8fb' }}
+                              onClick={(e) => handleEdit(e,item.id)}
+                              role="button"
+                            >
+                              <span className="btn-inner text-primary">
+                                {item.actionadd}
+                              </span>
+                            </Button>
+                            <Button
+                              className="btn btn-icon btn-sm rounded-pill ms-1"
+                              style={{ background: '#eff8fb' }}
+                              onClick={(e) => handleDelete(e,item.id)}
+                              role="button"
+                            >
+                              <span className="btn-inner text-danger">
+                                {deleteSvg}
+                              </span>
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </Table>
+                {userData?.rows?.length === 0 && (
+                  <div className="d-flex justify-content-center">
+                    <NodataAnimation />
+                  </div>
+                )}
+                <div className="mt-5 me-5 float-end">
+                  <PaginationComponent
+                    itemsCount={ProductCount}
+                    itemsPerPage={limit}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </div>
+              </div>
+            </Card.Body>
+          </Card.Body>
+        </Card>
+      </div>
+
+      
+
+      {/* old */}
+
+      {/* <div className="d-flex flex-md-row flex-column justify-content-between align-items-center col-12 my-2"> */}
+      {/* <h5 className="mb-4">Products List</h5> */}
+      {/* <div className="col-12 col-md-4"></div> */}
+      {/* <div className="col-12 col-md-4 text-end mt-3 mt-md-0">
           <Button
             onClick={() => setAddProduct(true)}
             className=" col-12 col-md-4  hvr-sweep-to-bottom"
           >
             Add New
           </Button>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
 
-      <div>
+      {/* <div>
         <Row className="mt-5">
           {ProductsList?.map((item, idx) => (
             <Col
@@ -111,7 +293,7 @@ const ProductList = () => {
               }}
             >
               <Card style={{ width: '18rem' }} className="shadow-sm">
-                <Card.Img variant="top" height={160} src={item.image} />
+                <Card.Img variant="top" height={130} src={item.image} />
                 <Card.Body className="text-center">
                   <Card.Title>
                     Brand:
@@ -129,16 +311,6 @@ const ProductList = () => {
                       {item.product_code}
                     </span>
                   </Card.Title>
-                  <Card.Title>
-                    Price{' '}
-                    <span style={{ color: '#969696' }}>
-                      ₹{item.price_without_VAT}
-                    </span>
-                  </Card.Title>
-                  <Card.Text>
-                    <span className="text-black">Description :</span>
-                    {item.description}
-                  </Card.Text>
 
                   <button
                     onClick={() => handleDelete(item.id)}
@@ -192,13 +364,13 @@ const ProductList = () => {
             </Col>
           ))}
         </Row>
-      </div>
-      {ProductsList?.length === 0 && (
+      </div> */}
+      {/* {ProductsList?.length === 0 && (
         <div className="d-flex justify-content-center">
           <NodataAnimation />
         </div>
-      )}
-      <Row className="ms-5">
+      )} */}
+      {/* <Row className="ms-5">
         <Col>
           <div className="mt-5 me-5 d-flex justify-content-end">
             <PaginationComponent
@@ -208,7 +380,7 @@ const ProductList = () => {
             />
           </div>
         </Col>
-      </Row>
+      </Row> */}
     </>
   )
 }

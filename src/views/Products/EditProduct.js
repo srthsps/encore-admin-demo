@@ -26,8 +26,8 @@ const EditProduct = (props) => {
   }, [props.productId]);
 
   useEffect(() => {
-    dispatch(fetchBrandList());
-    dispatch(fetchCategoryList());
+    dispatch(fetchBrandList({}));
+    dispatch(fetchCategoryList({}));
     // dispatch(fetchBarcodeList({ limit, offset: currentPage }));
   }, []);
 
@@ -35,7 +35,7 @@ const EditProduct = (props) => {
   const { CategoryList } = useSelector((state) => state.CategoryListSlice);
   const { ProductsDetails } = useSelector((state) => state.productDetailsSlice);
 
-  const { addProductFetching, editProductSuccess, editProductError } =
+  const { editProductFetching, editProductSuccess, editProductError } =
     useSelector((state) => state.EditProductSlice);
 
   const [product_code, setProductCode] = useState("");
@@ -127,12 +127,13 @@ const EditProduct = (props) => {
       });
     } else {
       let payload = data;
-
+      
       dispatch(editProduct({ payload, productID: props.productId }));
+      props.setToggle(false);
     }
   };
   useEffect(() => {
-    if (editProductSuccess) {
+    if (editProductFetching) {
       toast.success("Updated successfully", {
         toastId: "addUser",
         position: "top-center",
@@ -145,8 +146,8 @@ const EditProduct = (props) => {
         draggable: true,
         progress: undefined,
       });
-      dispatch(cleareditProductState());
       props?.setToggle(false);
+      dispatch(cleareditProductState());
     } else if (editProductError) {
       if (editProductError) {
         toast.error(editProductError, {
@@ -180,13 +181,7 @@ const EditProduct = (props) => {
 
   const handleCancel = () => {
     props.setToggle(false);
-    setBrand(""),
-      setCategories(""),
-      setDescription(""),
-      setMinimumQuantity(""),
-      setPriceWithoutVAT(""),
-      setProductCode(""),
-      setUnitOfMeasure("");
+
   };
 
   return (

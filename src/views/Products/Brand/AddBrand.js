@@ -123,8 +123,8 @@ const AddBrand = (props) => {
       dispatch(clearbrandAddState());
       props?.setToggle(false);
     } else if (brandAddError) {
-      if (brandAddErrorMessage.includes("Email already exists")) {
-        toast.error("Email already exists", {
+      if (brandAddErrorMessage) {
+        toast.error(brandAddErrorMessage, {
           toastId: "addLawyer",
           position: "top-right",
           autoClose: 5000,

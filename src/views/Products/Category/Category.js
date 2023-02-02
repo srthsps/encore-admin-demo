@@ -1,7 +1,9 @@
 import React, { useRef, memo, useState, useEffect, useCallback } from 'react'
-import { Button, Card, Row, Col, Image } from 'react-bootstrap'
+import { Button, Card, Row, Col, Image, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
+import Swal from 'sweetalert2'
+import { deleteSvg, editSvg, viewSvg } from '../../../components/custom/buttonSvg'
 import NodataAnimation from '../../../components/custom/NodataAnimation'
 import PaginationComponent from '../../../components/custom/paginationComponent'
 import { fetchCategoryList } from '../../../store/Product/Categories/CategoriesListSlice'
@@ -20,6 +22,11 @@ const Category = () => {
 
   const dispatch = useDispatch()
 
+  const [catData, setCatData] = useState({
+    columns: ['Sl No', 'Category', 'Actions'],
+    rows: [],
+  })
+
   const { CategoryList, CategoryCount, categorySuccess } = useSelector(
     (state) => state.CategoryListSlice,
   )
@@ -29,9 +36,22 @@ const Category = () => {
   )
 
   const handleDelete = (id) => {
-    dispatch(deletecategory({ categoryID: id }))
-    dispatch(clearcategoryDeleteState())
-  }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: `rgba(60,60,60,0.8)`,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your data has been deleted.", "success");
+        dispatch(deletecategory({ categoryID: id }))
+        dispatch(clearcategoryDeleteState())
+      }
+    });
+  };
+
   const handleEdit = (id, data) => {
     setCatID(id)
     setEditCategory(true)
@@ -50,19 +70,19 @@ const Category = () => {
   }, [])
 
 
-  // useEffect(() => {
-  //   if (ProductsList.length > 0) {
-  //     let barcodes = ProductsList.map((item, idx) => {
-  //       return {
-  //         ...item,
-  //         sl: idx + 1,
-  //       };
-  //     });
-  //     setData({ ...data, rows: barcodes });
-  //   } else {
-  //     setData({ ...data, rows: [] });
-  //   }
-  // }, [ProductsList]);
+  useEffect(() => {
+    if (CategoryList.length > 0) {
+      let category = CategoryList.map((item, idx) => {
+        return {
+          ...item,
+          sl: idx + 1,
+        };
+      });
+      setCatData({ ...catData, rows: category });
+    } else {
+      setCatData({ ...catData, rows: [] });
+    }
+  }, [CategoryList]);
 
   return (
     <>
@@ -81,14 +101,82 @@ const Category = () => {
           </Button>
         </div>
       </div>
+      <Card>
+        <div className="d-flex flex-md-row flex-column justify-content-between align-items-center col-12 my-3">
 
-      <div>
+          <Card.Body>
+
+
+            <div className="col-12 col-md-4"></div>
+            <div className="custom-table-effect table-responsive">
+
+              <Table>
+                <thead>
+                  <tr
+                    className="rounded"
+                    style={{ backgroundColor: '#eff8fb', borderRadius: '15px' }}
+                  >
+                    {catData?.columns?.map((item, idx) => {
+                      return (
+                        <th className="py-4 text-black" id={idx}>
+                          {item}
+                        </th>
+                      )
+                    })}
+                  </tr>
+                </thead>
+                <tbody className="">
+                  {catData?.rows?.map((item, idx) => {
+                    return (
+                      <tr className="py-4" id={idx + 1}>
+                        <td className="py-4 text-black">
+                          {currentPage + idx + 1}
+                        </td>
+                        <td className="py-4 text-black">{item.category_name}</td>
+
+                        <td>
+                          <div className="">
+                            <Button
+                              className="btn btn-primary btn-icon btn-sm rounded-pill ms-1"
+                              style={{ background: '#eff8fb' }}
+                              onClick={() => handleEdit(item.id)}
+                              role="button"
+                            >
+                              <span className="btn-inner text-primary">
+                                {editSvg}
+                              </span>
+                            </Button>
+                            <Button
+                              className="btn btn-primary btn-icon btn-sm rounded-pill ms-1"
+                              style={{ background: '#eff8fb' }}
+                              onClick={() => handleDelete(item.id)}
+                              role="button"
+                            >
+                              <span className="btn-inner text-danger">
+                                {deleteSvg}
+                              </span>
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </Table>
+
+            </div>
+          </Card.Body>
+        </div>
+      </Card>
+
+
+      {/* <div>
         <Row className="mt-5">
-          {CategoryList?.map((item, idx) => (
-            <Col
-              key={idx}
-              md={3}
-              style={{
+        {CategoryList?.map((item, idx) => (
+          <Col
+          key={idx}
+          md={3}
+          style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -125,7 +213,7 @@ const Category = () => {
             </Col>
           ))}
         </Row>
-      </div>
+      </div> */}
       {CategoryList?.length === 0 && (
         <div className="d-flex justify-content-center">
           <NodataAnimation />

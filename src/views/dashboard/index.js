@@ -20,6 +20,7 @@ const Index = memo((props) => {
           <div className="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-3">
             <div className="d-flex flex-column">
               <h4>Quick Insights</h4>
+              
             </div>
           </div>
         </Col>

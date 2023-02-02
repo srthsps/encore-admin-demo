@@ -1,5 +1,5 @@
 import React, { useRef, memo, useState, useEffect, useCallback } from 'react'
-import { Button, Card, Row, Col, Image, Badge } from 'react-bootstrap'
+import { Button, Card, Row, Col, Image, Badge, Table } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { fetchBarcodeList } from '../../../store/barcode/barcodeListSlice'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,6 +13,8 @@ import {
   deleteBrand,
 } from '../../../store/Product/Brand/BrandDeleteSlice'
 import EditBrand from './EditBrand'
+import { deleteSvg, editSvg, viewSvg } from '../../../components/custom/buttonSvg'
+import Swal from 'sweetalert2'
 
 const BrandList = () => {
   const dispatch = useDispatch()
@@ -34,10 +36,24 @@ const BrandList = () => {
     // dispatch(fetchBarcodeList({ limit, offset: currentPage }));
   }, [brandAddSuccess, BrandDeleteSuccess, limit, currentPage])
 
+
   const handleDelete = (id) => {
-    dispatch(deleteBrand({ BrandID: id }))
-    dispatch(clearBrandDeleteState())
-  }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: `rgba(60,60,60,0.8)`,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your data has been deleted.", "success");
+        dispatch(deleteBrand({ BrandID: id }))
+        // dispatch(fetchStaffList({ search, limit, offset: currentPage }));
+        dispatch(clearBrandDeleteState())
+      }
+    });
+  };
 
   const setAddToggle = useCallback(() => {
     setAddBarcode((v) => !v)
@@ -48,19 +64,24 @@ const BrandList = () => {
     setBrandId(id)
   }
 
-  // useEffect(() => {
-  //   if (ProductsList.length > 0) {
-  //     let barcodes = ProductsList.map((item, idx) => {
-  //       return {
-  //         ...item,
-  //         sl: idx + 1,
-  //       };
-  //     });
-  //     setData({ ...data, rows: barcodes });
-  //   } else {
-  //     setData({ ...data, rows: [] });
-  //   }
-  // }, [ProductsList]);
+  const [brandData, setBrandData] = useState({
+    columns: ["Brand name", "Brand image", "brand popularity", "Actions"],
+    rows: [],
+  });
+
+  useEffect(() => {
+    if (BrandList.length > 0) {
+      let brand = BrandList?.map((item, idx) => {
+        return {
+          ...item,
+          sl: idx + 1,
+        };
+      });
+      setBrandData({ ...brandData, rows: brand });
+    } else {
+      setBrandData({ ...brandData, rows: [] });
+    }
+  }, [BrandList]);
 
   return (
     <>
@@ -71,20 +92,110 @@ const BrandList = () => {
         BrandId={brandId}
       />
 
-      <div className="d-flex flex-md-row flex-column justify-content-between align-items-center col-12 my-2">
-        {/* <h5 className="mb-4">Products List</h5> */}
-        <div className="col-12 col-md-4"></div>
-        <div className="col-12 col-md-4 text-end mt-3 mt-md-0">
-          <Button
-            onClick={() => setAddBarcode(true)}
-            className=" col-12 col-md-4  hvr-sweep-to-bottom"
-          >
-            Add New
-          </Button>
-        </div>
+      <h5 className="mb-0">Brands</h5>
+      <div className="mt-5">
+        <Card>
+          <Card.Body>
+            <div className="d-flex flex-md-row flex-column justify-content-between align-items-center col-12 my-3">
+              <div className="col-12 col-md-4">
+              </div>
+              <div className="col-6 col-md-4 text-end mt-3 mt-md-0">
+                <Button
+                  onClick={() => setAddBarcode(true)}
+                  className="me-4 col-12 col-md-4  hvr-sweep-to-bottom"
+                >
+                  Add New
+                </Button>
+              </div>
+            </div>
+
+            <Card.Body>
+              <div className="custom-table-effect table-responsive">
+                <Table>
+                  <thead>
+                    <tr
+                      className="rounded"
+                      style={{
+                        backgroundColor: '#eff8fb',
+                        borderRadius: '15px',
+                      }}
+                    >
+                      {brandData?.columns?.map((item, idx) => {
+                        return (
+                          <th className="text-black" id={idx}>
+                            {item}
+                          </th>
+                        )
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody className="">
+                    {brandData?.rows?.map((item, idx) => {
+                      return (
+                        <tr className="py-4" id={idx + 1}>
+                          <td className="text-black">{item?.brand_name}</td>
+                          <td className="text-black">
+                            <img
+                              src={item?.logo}
+                              height="60px"
+                              width="70px"
+                              alt="image"
+                            />
+                          </td>
+                          <td className="text-black">{item?.is_popular ? (
+                            <Badge
+                              bg="success"
+                              style={{ width: '5rem', fontSize: ".5rem" }}
+                            >
+                              Popular Brand
+                            </Badge>
+                          ) : null}</td>
+                          <td>
+                            <Button
+                              className="btn btn-primary btn-icon btn-sm rounded-pill ms-1"
+                              style={{ background: '#eff8fb' }}
+                              onClick={() => handleEdit(item.id)}
+                              role="button"
+                            >
+                              <span className="btn-inner text-primary">
+                                {editSvg}
+                              </span>
+                            </Button>
+                            <Button
+                              className="btn btn-icon btn-sm rounded-pill ms-1"
+                              style={{ background: '#eff8fb' }}
+                              onClick={() => handleDelete(item.id)}
+                              role="button"
+                            >
+                              <span className="btn-inner text-danger">
+                                {deleteSvg}
+                              </span>
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </Table>
+                {brandData?.rows?.length === 0 && (
+                  <div className="d-flex justify-content-center">
+                    <NodataAnimation />
+                  </div>
+                )}
+                <div className="mt-5 me-5 float-end">
+                  <PaginationComponent
+                    itemsCount={BrandListCount}
+                    itemsPerPage={limit}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </div>
+              </div>
+            </Card.Body>
+          </Card.Body>
+        </Card>
       </div>
 
-      <div>
+      {/* <div>
         <Row className="mt-5">
           {BrandList?.map((item, idx) => (
             <Col
@@ -98,10 +209,10 @@ const BrandList = () => {
               }}
             >
               <Card
-                style={{ width: '18rem' }}
-                className="shadow-sm text-center"
+                style={{ width: "200px", height:"200px", display:"flex", alignItems:"center" }}
+                className="shadow-sm text-center p-3"
               >
-                <Card.Img variant="top" height={150} src={item.logo} />
+                <Card.Img variant="top" style={{ width: "80px", height:"60px" }}  src={item.logo} />
                 <Card.Body>
                   <Card.Title style={{ color: '#969696' }}>
                     Brand:{item.brand_name}
@@ -110,9 +221,8 @@ const BrandList = () => {
                 <Col>
                   {item?.is_popular ? (
                     <Badge
-                      pill
-                      bg="success mb-3 me-5"
-                      style={{ width: '8rem' }}
+                      bg="success"
+                      style={{width: '5rem', fontSize:".5rem" }}
                     >
                       Popular Brand
                     </Badge>
@@ -187,7 +297,7 @@ const BrandList = () => {
             />
           </div>
         </Col>
-      </Row>
+      </Row> */}
     </>
   )
 }
